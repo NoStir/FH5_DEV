@@ -16,6 +16,7 @@ public partial class GlobalHotkey : ObservableObject
     public Key Key{ get; set; }
     public GamepadButton GamepadButton { get; set; }
     public bool UseGamepad { get; set; }
+    public bool UseSteeringWheel { get; set; }
 
     public bool IsPressed { get; set; }
     public bool CanExecute { get; set; }
@@ -31,6 +32,7 @@ public partial class GlobalHotkey : ObservableObject
         Key = key;
         GamepadButton = GamepadButton.None;
         UseGamepad = false;
+        UseSteeringWheel = false;
         Callback = callback;
         Interval = interval;
         CanExecute = canExecute;
@@ -43,6 +45,20 @@ public partial class GlobalHotkey : ObservableObject
         Key = Key.None;
         GamepadButton = gamepadButton;
         UseGamepad = true;
+        UseSteeringWheel = false;
+        Callback = callback;
+        Interval = interval;
+        CanExecute = canExecute;
+    }
+
+    public GlobalHotkey(string name, GamepadButton wheelButton, Action callback, bool isSteeringWheel, int interval = 250, bool canExecute = false)
+    {
+        Name = name;
+        Modifier = ModifierKeys.None;
+        Key = Key.None;
+        GamepadButton = wheelButton;
+        UseGamepad = false;
+        UseSteeringWheel = isSteeringWheel;
         Callback = callback;
         Interval = interval;
         CanExecute = canExecute;
@@ -50,23 +66,25 @@ public partial class GlobalHotkey : ObservableObject
     
     private class HotkeyData
     {
-        public HotkeyData(string modifier, string key, string gamepadButton, bool useGamepad)
+        public HotkeyData(string modifier, string key, string gamepadButton, bool useGamepad, bool useSteeringWheel)
         {
             Modifier = modifier;
             Key = key;
             GamepadButton = gamepadButton;
             UseGamepad = useGamepad;
+            UseSteeringWheel = useSteeringWheel;
         }
 
         public string Modifier { get; set; }
         public string Key { get; set; }
         public string GamepadButton { get; set; }
         public bool UseGamepad { get; set; }
+        public bool UseSteeringWheel { get; set; }
     }
     
     public void Save()
     {
-        var data = new HotkeyData(Modifier.ToString(), Key.ToString(), GamepadButton.ToString(), UseGamepad);
+        var data = new HotkeyData(Modifier.ToString(), Key.ToString(), GamepadButton.ToString(), UseGamepad, UseSteeringWheel);
         string json = JsonSerializer.Serialize(data);
         string path = GetSavePath();
         File.WriteAllText(path, json);
@@ -103,11 +121,14 @@ public partial class GlobalHotkey : ObservableObject
         }
 
         UseGamepad = data.UseGamepad;
+        
+        // Handle backward compatibility - UseSteeringWheel might not exist in old save files
+        UseSteeringWheel = data.UseSteeringWheel;
 
         // Update the HotKey property based on current settings
-        if (UseGamepad)
+        if (UseGamepad || UseSteeringWheel)
         {
-            Hotkey = new HotKey(Key.None); // No keyboard key when using gamepad
+            Hotkey = new HotKey(Key.None); // No keyboard key when using gamepad or wheel
         }
         else
         {

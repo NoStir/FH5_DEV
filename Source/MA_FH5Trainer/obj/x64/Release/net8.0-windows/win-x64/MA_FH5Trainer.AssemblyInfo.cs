@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MA_FH5Trainer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6879a881d86945419ead73327ad324d928e514b3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Merika\'s FH5 Trainer v685.421 ( + Gamepad Support) (STEAM & UWP)")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MA_FH5Trainer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Falafel\\Documents\\GitHub\\MA_FH5Trainer_Gamepad\\MA_FH5Trainer\\Source\\Memory\\Memory.csproj": {}
+    "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Falafel\\Documents\\GitHub\\MA_FH5Trainer_Gamepad\\MA_FH5Trainer\\Source\\Memory\\Memory.csproj": {
+    "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Falafel\\Documents\\GitHub\\MA_FH5Trainer_Gamepad\\MA_FH5Trainer\\Source\\Memory\\Memory.csproj",
+        "projectUniqueName": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj",
         "projectName": "Memory",
-        "projectPath": "C:\\Users\\Falafel\\Documents\\GitHub\\MA_FH5Trainer_Gamepad\\MA_FH5Trainer\\Source\\Memory\\Memory.csproj",
+        "projectPath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj",
         "packagesPath": "C:\\Users\\Falafel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Falafel\\Documents\\GitHub\\MA_FH5Trainer_Gamepad\\MA_FH5Trainer\\Source\\Memory\\obj\\",
+        "outputPath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

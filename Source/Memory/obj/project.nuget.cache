@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ky5JlLeHxok=",
+  "dgSpecHash": "l84kWpKz190=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Falafel\\Documents\\GitHub\\MA_FH5Trainer_Gamepad\\MA_FH5Trainer\\Source\\Memory\\Memory.csproj",
+  "projectFilePath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Falafel\\.nuget\\packages\\reloaded.memory\\9.1.0\\reloaded.memory.9.1.0.nupkg.sha512",
     "C:\\Users\\Falafel\\.nuget\\packages\\reloaded.memory.sigscan\\3.1.9\\reloaded.memory.sigscan.3.1.9.nupkg.sha512",

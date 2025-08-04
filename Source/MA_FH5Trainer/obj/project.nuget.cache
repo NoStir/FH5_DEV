@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cCiuuHES7hw=",
+  "dgSpecHash": "epWGHkjb2L4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Falafel\\Documents\\GitHub\\MA_FH5Trainer_Gamepad\\MA_FH5Trainer\\Source\\MA_FH5Trainer\\MA_FH5Trainer.csproj",
+  "projectFilePath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\MA_FH5Trainer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Falafel\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.2\\communitytoolkit.mvvm.8.2.2.nupkg.sha512",
     "C:\\Users\\Falafel\\.nuget\\packages\\controlzex\\4.4.0\\controlzex.4.4.0.nupkg.sha512",
@@ -84,6 +84,7 @@
     "C:\\Users\\Falafel\\.nuget\\packages\\runtime.win.system.net.sockets\\4.3.0\\runtime.win.system.net.sockets.4.3.0.nupkg.sha512",
     "C:\\Users\\Falafel\\.nuget\\packages\\runtime.win.system.runtime.extensions\\4.3.0\\runtime.win.system.runtime.extensions.4.3.0.nupkg.sha512",
     "C:\\Users\\Falafel\\.nuget\\packages\\sharpdx\\4.2.0\\sharpdx.4.2.0.nupkg.sha512",
+    "C:\\Users\\Falafel\\.nuget\\packages\\sharpdx.directinput\\4.2.0\\sharpdx.directinput.4.2.0.nupkg.sha512",
     "C:\\Users\\Falafel\\.nuget\\packages\\sharpdx.xinput\\4.2.0\\sharpdx.xinput.4.2.0.nupkg.sha512",
     "C:\\Users\\Falafel\\.nuget\\packages\\system.appcontext\\4.3.0\\system.appcontext.4.3.0.nupkg.sha512",
     "C:\\Users\\Falafel\\.nuget\\packages\\system.buffers\\4.3.0\\system.buffers.4.3.0.nupkg.sha512",

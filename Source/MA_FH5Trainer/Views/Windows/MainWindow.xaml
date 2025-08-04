@@ -77,7 +77,7 @@
                            HorizontalAlignment="Left"
                            FontWeight="Medium"
                            FontSize="11.5"
-                           TextWrapping="Wrap"><Run Text="This cheat is 100% free. If you paid, you were scammed. Original published by the"/><Run Text=" Discord."/><LineBreak/><Run Text="Developed by @merikaaaaa on Discord. Keypad support added by @purrspire(DC)/@NoStir(GH)"/></TextBlock>
+                           TextWrapping="Wrap"><Run Text="This cheat is 100% free. If you paid, you were scammed. Developed by @merikaaaaa on Discord."/><LineBreak/><Run Text="Keypad/steering wheel support added by @purrspire(DC)/@NoStir(GH)"/></TextBlock>
 
                 <StackPanel Grid.Column="1"
                             Grid.Row="0"
@@ -209,6 +209,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         
                         <RadioButton x:Name="KeyboardInputRadio" 
@@ -221,6 +222,11 @@
                                    Content="Gamepad" 
                                    Checked="InputType_Changed"
                                    Grid.Column="1"
+                                   HorizontalAlignment="Center"/>
+                        <RadioButton x:Name="SteeringWheelInputRadio" 
+                                   Content="Wheel" 
+                                   Checked="InputType_Changed"
+                                   Grid.Column="2"
                                    HorizontalAlignment="Center"/>
                     </Grid>
 
@@ -260,9 +266,33 @@
                                 Background="{Binding Theming.DarkerColour, Mode=OneWay}"
                                 Visibility="Collapsed">
 
-                            <ComboBox x:Name="GamepadButtonComboBox"
+                            <TextBox x:Name="GamepadButtonTextBox"
                                     BorderThickness="0"
                                     HorizontalAlignment="Stretch"
+                                    IsReadOnly="True"
+                                    Text="None"
+                                    mah:TextBoxHelper.Watermark="Press SET to capture gamepad input"
+                                    IsEnabled="{Binding ViewModel.HotkeysEnabled, Mode=OneWay}"
+                                    Background="{Binding Theming.DarkerColour, Mode=OneWay}"
+                                    mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"/>
+
+                        </Border>
+
+                        <!-- Steering Wheel Input -->
+                        <Border x:Name="SteeringWheelInputBorder"
+                                CornerRadius="{StaticResource ControlCornerRadius}" 
+                                Padding="2"
+                                Margin="0 4 0 0"
+                                HorizontalAlignment="Stretch"
+                                Background="{Binding Theming.DarkerColour, Mode=OneWay}"
+                                Visibility="Collapsed">
+
+                            <TextBox x:Name="SteeringWheelButtonTextBox"
+                                    BorderThickness="0"
+                                    HorizontalAlignment="Stretch"
+                                    IsReadOnly="True"
+                                    Text="None"
+                                    mah:TextBoxHelper.Watermark="Press SET to capture steering wheel input"
                                     IsEnabled="{Binding ViewModel.HotkeysEnabled, Mode=OneWay}"
                                     Background="{Binding Theming.DarkerColour, Mode=OneWay}"
                                     mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"/>

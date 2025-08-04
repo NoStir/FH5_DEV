@@ -1,12 +1,89 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Falafel\\Documents\\GitHub\\FH_DEV\\MA_FH5Trainer\\Source\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C01F6F01-BD57-4CEB-88CF-B9CD905427A2}|MA_FH5Trainer\\MA_FH5Trainer.csproj|c:\\users\\falafel\\downloads\\fh5_dev-main (1)\\fh5_dev-main\\source\\ma_fh5trainer\\views\\windows\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{C01F6F01-BD57-4CEB-88CF-B9CD905427A2}|MA_FH5Trainer\\MA_FH5Trainer.csproj|solutionrelative:ma_fh5trainer\\views\\windows\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C01F6F01-BD57-4CEB-88CF-B9CD905427A2}|MA_FH5Trainer\\MA_FH5Trainer.csproj|c:\\users\\falafel\\downloads\\fh5_dev-main (1)\\fh5_dev-main\\source\\ma_fh5trainer\\ma_fh5trainer.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{C01F6F01-BD57-4CEB-88CF-B9CD905427A2}|MA_FH5Trainer\\MA_FH5Trainer.csproj|solutionrelative:ma_fh5trainer\\ma_fh5trainer.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C01F6F01-BD57-4CEB-88CF-B9CD905427A2}|MA_FH5Trainer\\MA_FH5Trainer.csproj|c:\\users\\falafel\\downloads\\fh5_dev-main (1)\\fh5_dev-main\\source\\ma_fh5trainer\\ma_fh5trainer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{C01F6F01-BD57-4CEB-88CF-B9CD905427A2}|MA_FH5Trainer\\MA_FH5Trainer.csproj|solutionrelative:ma_fh5trainer\\ma_fh5trainer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C01F6F01-BD57-4CEB-88CF-B9CD905427A2}|MA_FH5Trainer\\MA_FH5Trainer.csproj|c:\\users\\falafel\\downloads\\fh5_dev-main (1)\\fh5_dev-main\\source\\ma_fh5trainer\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{C01F6F01-BD57-4CEB-88CF-B9CD905427A2}|MA_FH5Trainer\\MA_FH5Trainer.csproj|solutionrelative:ma_fh5trainer\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\Views\\Windows\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MA_FH5Trainer\\Views\\Windows\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\Views\\Windows\\MainWindow.xaml",
+              "RelativeToolTip": "MA_FH5Trainer\\Views\\Windows\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-08-04T21:50:25.026Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MA_FH5Trainer",
+              "DocumentMoniker": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\MA_FH5Trainer.csproj",
+              "RelativeDocumentMoniker": "MA_FH5Trainer\\MA_FH5Trainer.csproj",
+              "ToolTip": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\MA_FH5Trainer.csproj",
+              "RelativeToolTip": "MA_FH5Trainer\\MA_FH5Trainer.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-04T21:50:10.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{269a02dc-6af8-11d3-bdc4-00c04f688e50}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\App.xaml",
+              "RelativeDocumentMoniker": "MA_FH5Trainer\\App.xaml",
+              "ToolTip": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\App.xaml",
+              "RelativeToolTip": "MA_FH5Trainer\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-08-04T21:48:48.361Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MA_FH5Trainer",
+              "DocumentMoniker": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\MA_FH5Trainer.csproj",
+              "RelativeDocumentMoniker": "MA_FH5Trainer\\MA_FH5Trainer.csproj",
+              "ToolTip": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\MA_FH5Trainer.csproj",
+              "RelativeToolTip": "MA_FH5Trainer\\MA_FH5Trainer.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-08-04T21:48:39.076Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
