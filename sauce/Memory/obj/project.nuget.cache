@@ -1,0 +1,18 @@
+{
+  "version": 2,
+<<<<<<< HEAD
+  "dgSpecHash": "l84kWpKz190=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj",
+=======
+  "dgSpecHash": "EvK2LZogKqaxZz8WBcgJjUwKQnTRC+0e23GAJbxKL+j8KHFO+bSTX78ETuRHuqsst28WJmSXYk7BkYgFIEJ9Hw==",
+  "success": true,
+  "projectFilePath": "/home/runner/work/FH5_DEV/FH5_DEV/Source/Memory/Memory.csproj",
+>>>>>>> 7619942410cf5566348cb95479d4a83a00d6d876
+  "expectedPackageFiles": [
+    "/home/runner/.nuget/packages/reloaded.memory/9.1.0/reloaded.memory.9.1.0.nupkg.sha512",
+    "/home/runner/.nuget/packages/reloaded.memory.sigscan/3.1.9/reloaded.memory.sigscan.3.1.9.nupkg.sha512",
+    "/home/runner/.nuget/packages/reloaded.memory.sigscan.definitions/1.1.1/reloaded.memory.sigscan.definitions.1.1.1.nupkg.sha512"
+  ],
+  "logs": []
+}
