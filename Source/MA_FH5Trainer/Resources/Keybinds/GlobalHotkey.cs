@@ -121,6 +121,8 @@ public partial class GlobalHotkey : ObservableObject
         }
 
         UseGamepad = data.UseGamepad;
+        
+        // Handle backward compatibility - UseSteeringWheel might not exist in old save files
         UseSteeringWheel = data.UseSteeringWheel;
 
         // Update the HotKey property based on current settings

@@ -1,6 +1,6 @@
 using System.Timers;
 using SharpDX.XInput;
-using SharpDX.DirectInput;
+using DirectInput = SharpDX.DirectInput;
 
 namespace MA_FH5Trainer.Resources.Keybinds;
 
@@ -14,10 +14,10 @@ public static class GamepadManager
     private static readonly State[] s_currentStates = new State[4];
     
     // DirectInput for steering wheels
-    private static DirectInput? s_directInput;
-    private static readonly List<Joystick> s_steeringWheels = new();
-    private static readonly Dictionary<Joystick, JoystickState> s_previousWheelStates = new();
-    private static readonly Dictionary<Joystick, JoystickState> s_currentWheelStates = new();
+    private static DirectInput.DirectInput? s_directInput;
+    private static readonly List<DirectInput.Joystick> s_steeringWheels = new();
+    private static readonly Dictionary<DirectInput.Joystick, DirectInput.JoystickState> s_previousWheelStates = new();
+    private static readonly Dictionary<DirectInput.Joystick, DirectInput.JoystickState> s_currentWheelStates = new();
     
     private static System.Timers.Timer? s_pollTimer;
     private static bool s_isInitialized = false;
@@ -250,42 +250,47 @@ public static class GamepadManager
         }
     }
 
-    private static void CheckWheelButtonEvents(Joystick wheel)
+    private static void CheckWheelButtonEvents(DirectInput.Joystick wheel)
     {
         if (!s_previousWheelStates.TryGetValue(wheel, out var previous) || 
             !s_currentWheelStates.TryGetValue(wheel, out var current))
             return;
 
-        // Check each wheel button for press events
-        CheckWheelButton(wheel, GamepadButton.WheelButton1, !previous.Buttons[0] && current.Buttons[0]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton2, !previous.Buttons[1] && current.Buttons[1]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton3, !previous.Buttons[2] && current.Buttons[2]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton4, !previous.Buttons[3] && current.Buttons[3]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton5, !previous.Buttons[4] && current.Buttons[4]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton6, !previous.Buttons[5] && current.Buttons[5]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton7, !previous.Buttons[6] && current.Buttons[6]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton8, !previous.Buttons[7] && current.Buttons[7]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton9, !previous.Buttons[8] && current.Buttons[8]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton10, !previous.Buttons[9] && current.Buttons[9]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton11, !previous.Buttons[10] && current.Buttons[10]);
-        CheckWheelButton(wheel, GamepadButton.WheelButton12, !previous.Buttons[11] && current.Buttons[11]);
-        CheckWheelButton(wheel, GamepadButton.LeftPaddle, !previous.Buttons[12] && current.Buttons[12]);
-        CheckWheelButton(wheel, GamepadButton.RightPaddle, !previous.Buttons[13] && current.Buttons[13]);
-        CheckWheelButton(wheel, GamepadButton.WheelStart, !previous.Buttons[14] && current.Buttons[14]);
-        CheckWheelButton(wheel, GamepadButton.WheelSelect, !previous.Buttons[15] && current.Buttons[15]);
-
-        // Check D-pad
-        var prevDPad = GetDPadFromPOV(previous.PointOfViewControllers[0]);
-        var currDPad = GetDPadFromPOV(current.PointOfViewControllers[0]);
+        // Check each wheel button for press events (with bounds checking)
+        var buttonCount = Math.Min(current.Buttons.Length, 16); // Limit to 16 buttons
         
-        if (prevDPad != GamepadButton.WheelDPadUp && currDPad == GamepadButton.WheelDPadUp)
-            CheckWheelButton(wheel, GamepadButton.WheelDPadUp, true);
-        if (prevDPad != GamepadButton.WheelDPadDown && currDPad == GamepadButton.WheelDPadDown)
-            CheckWheelButton(wheel, GamepadButton.WheelDPadDown, true);
-        if (prevDPad != GamepadButton.WheelDPadLeft && currDPad == GamepadButton.WheelDPadLeft)
-            CheckWheelButton(wheel, GamepadButton.WheelDPadLeft, true);
-        if (prevDPad != GamepadButton.WheelDPadRight && currDPad == GamepadButton.WheelDPadRight)
-            CheckWheelButton(wheel, GamepadButton.WheelDPadRight, true);
+        if (buttonCount > 0) CheckWheelButton(wheel, GamepadButton.WheelButton1, previous.Buttons.Length > 0 && current.Buttons.Length > 0 && !previous.Buttons[0] && current.Buttons[0]);
+        if (buttonCount > 1) CheckWheelButton(wheel, GamepadButton.WheelButton2, previous.Buttons.Length > 1 && current.Buttons.Length > 1 && !previous.Buttons[1] && current.Buttons[1]);
+        if (buttonCount > 2) CheckWheelButton(wheel, GamepadButton.WheelButton3, previous.Buttons.Length > 2 && current.Buttons.Length > 2 && !previous.Buttons[2] && current.Buttons[2]);
+        if (buttonCount > 3) CheckWheelButton(wheel, GamepadButton.WheelButton4, previous.Buttons.Length > 3 && current.Buttons.Length > 3 && !previous.Buttons[3] && current.Buttons[3]);
+        if (buttonCount > 4) CheckWheelButton(wheel, GamepadButton.WheelButton5, previous.Buttons.Length > 4 && current.Buttons.Length > 4 && !previous.Buttons[4] && current.Buttons[4]);
+        if (buttonCount > 5) CheckWheelButton(wheel, GamepadButton.WheelButton6, previous.Buttons.Length > 5 && current.Buttons.Length > 5 && !previous.Buttons[5] && current.Buttons[5]);
+        if (buttonCount > 6) CheckWheelButton(wheel, GamepadButton.WheelButton7, previous.Buttons.Length > 6 && current.Buttons.Length > 6 && !previous.Buttons[6] && current.Buttons[6]);
+        if (buttonCount > 7) CheckWheelButton(wheel, GamepadButton.WheelButton8, previous.Buttons.Length > 7 && current.Buttons.Length > 7 && !previous.Buttons[7] && current.Buttons[7]);
+        if (buttonCount > 8) CheckWheelButton(wheel, GamepadButton.WheelButton9, previous.Buttons.Length > 8 && current.Buttons.Length > 8 && !previous.Buttons[8] && current.Buttons[8]);
+        if (buttonCount > 9) CheckWheelButton(wheel, GamepadButton.WheelButton10, previous.Buttons.Length > 9 && current.Buttons.Length > 9 && !previous.Buttons[9] && current.Buttons[9]);
+        if (buttonCount > 10) CheckWheelButton(wheel, GamepadButton.WheelButton11, previous.Buttons.Length > 10 && current.Buttons.Length > 10 && !previous.Buttons[10] && current.Buttons[10]);
+        if (buttonCount > 11) CheckWheelButton(wheel, GamepadButton.WheelButton12, previous.Buttons.Length > 11 && current.Buttons.Length > 11 && !previous.Buttons[11] && current.Buttons[11]);
+        if (buttonCount > 12) CheckWheelButton(wheel, GamepadButton.LeftPaddle, previous.Buttons.Length > 12 && current.Buttons.Length > 12 && !previous.Buttons[12] && current.Buttons[12]);
+        if (buttonCount > 13) CheckWheelButton(wheel, GamepadButton.RightPaddle, previous.Buttons.Length > 13 && current.Buttons.Length > 13 && !previous.Buttons[13] && current.Buttons[13]);
+        if (buttonCount > 14) CheckWheelButton(wheel, GamepadButton.WheelStart, previous.Buttons.Length > 14 && current.Buttons.Length > 14 && !previous.Buttons[14] && current.Buttons[14]);
+        if (buttonCount > 15) CheckWheelButton(wheel, GamepadButton.WheelSelect, previous.Buttons.Length > 15 && current.Buttons.Length > 15 && !previous.Buttons[15] && current.Buttons[15]);
+
+        // Check D-pad (with bounds checking)
+        if (previous.PointOfViewControllers.Length > 0 && current.PointOfViewControllers.Length > 0)
+        {
+            var prevDPad = GetDPadFromPOV(previous.PointOfViewControllers[0]);
+            var currDPad = GetDPadFromPOV(current.PointOfViewControllers[0]);
+            
+            if (prevDPad != GamepadButton.WheelDPadUp && currDPad == GamepadButton.WheelDPadUp)
+                CheckWheelButton(wheel, GamepadButton.WheelDPadUp, true);
+            if (prevDPad != GamepadButton.WheelDPadDown && currDPad == GamepadButton.WheelDPadDown)
+                CheckWheelButton(wheel, GamepadButton.WheelDPadDown, true);
+            if (prevDPad != GamepadButton.WheelDPadLeft && currDPad == GamepadButton.WheelDPadLeft)
+                CheckWheelButton(wheel, GamepadButton.WheelDPadLeft, true);
+            if (prevDPad != GamepadButton.WheelDPadRight && currDPad == GamepadButton.WheelDPadRight)
+                CheckWheelButton(wheel, GamepadButton.WheelDPadRight, true);
+        }
     }
 
     private static GamepadButton GetDPadFromPOV(int pov)
@@ -300,7 +305,7 @@ public static class GamepadManager
         return GamepadButton.None;
     }
 
-    private static void CheckWheelButton(Joystick wheel, GamepadButton button, bool isPressed)
+    private static void CheckWheelButton(DirectInput.Joystick wheel, GamepadButton button, bool isPressed)
     {
         if (isPressed)
         {
@@ -357,16 +362,16 @@ public static class GamepadManager
     {
         try
         {
-            s_directInput = new DirectInput();
+            s_directInput = new DirectInput.DirectInput();
             
             // Find all joystick devices that could be steering wheels
-            var joystickDevices = s_directInput.GetDevices(DeviceType.Joystick, DeviceEnumerationFlags.AllDevices);
+            var joystickDevices = s_directInput.GetDevices(DirectInput.DeviceType.Joystick, DirectInput.DeviceEnumerationFlags.AllDevices);
             
             foreach (var deviceInstance in joystickDevices)
             {
                 try
                 {
-                    var joystick = new Joystick(s_directInput, deviceInstance.InstanceGuid);
+                    var joystick = new DirectInput.Joystick(s_directInput, deviceInstance.InstanceGuid);
                     
                     // Check if this might be a steering wheel by looking for steering axis
                     joystick.Properties.BufferSize = 128;
@@ -374,8 +379,8 @@ public static class GamepadManager
                     
                     // Add to our list of steering wheels
                     s_steeringWheels.Add(joystick);
-                    s_previousWheelStates[joystick] = new JoystickState();
-                    s_currentWheelStates[joystick] = new JoystickState();
+                    s_previousWheelStates[joystick] = new DirectInput.JoystickState();
+                    s_currentWheelStates[joystick] = new DirectInput.JoystickState();
                 }
                 catch (Exception)
                 {
@@ -414,33 +419,33 @@ public static class GamepadManager
     /// <param name="wheel">The steering wheel joystick</param>
     /// <param name="button">The button to check</param>
     /// <returns>True if the button is pressed</returns>
-    private static bool IsWheelButtonPressed(Joystick wheel, GamepadButton button)
+    private static bool IsWheelButtonPressed(DirectInput.Joystick wheel, GamepadButton button)
     {
         if (!s_currentWheelStates.TryGetValue(wheel, out var state))
             return false;
 
         return button switch
         {
-            GamepadButton.WheelButton1 => state.Buttons[0],
-            GamepadButton.WheelButton2 => state.Buttons[1],
-            GamepadButton.WheelButton3 => state.Buttons[2],
-            GamepadButton.WheelButton4 => state.Buttons[3],
-            GamepadButton.WheelButton5 => state.Buttons[4],
-            GamepadButton.WheelButton6 => state.Buttons[5],
-            GamepadButton.WheelButton7 => state.Buttons[6],
-            GamepadButton.WheelButton8 => state.Buttons[7],
-            GamepadButton.WheelButton9 => state.Buttons[8],
-            GamepadButton.WheelButton10 => state.Buttons[9],
-            GamepadButton.WheelButton11 => state.Buttons[10],
-            GamepadButton.WheelButton12 => state.Buttons[11],
-            GamepadButton.LeftPaddle => state.Buttons[12], // Common paddle mapping
-            GamepadButton.RightPaddle => state.Buttons[13],
-            GamepadButton.WheelDPadUp => state.PointOfViewControllers[0] >= 31500 || state.PointOfViewControllers[0] <= 4500,
-            GamepadButton.WheelDPadRight => state.PointOfViewControllers[0] >= 4500 && state.PointOfViewControllers[0] <= 13500,
-            GamepadButton.WheelDPadDown => state.PointOfViewControllers[0] >= 13500 && state.PointOfViewControllers[0] <= 22500,
-            GamepadButton.WheelDPadLeft => state.PointOfViewControllers[0] >= 22500 && state.PointOfViewControllers[0] <= 31500,
-            GamepadButton.WheelStart => state.Buttons[14], // Common start button mapping
-            GamepadButton.WheelSelect => state.Buttons[15], // Common select button mapping
+            GamepadButton.WheelButton1 => state.Buttons.Length > 0 && state.Buttons[0],
+            GamepadButton.WheelButton2 => state.Buttons.Length > 1 && state.Buttons[1],
+            GamepadButton.WheelButton3 => state.Buttons.Length > 2 && state.Buttons[2],
+            GamepadButton.WheelButton4 => state.Buttons.Length > 3 && state.Buttons[3],
+            GamepadButton.WheelButton5 => state.Buttons.Length > 4 && state.Buttons[4],
+            GamepadButton.WheelButton6 => state.Buttons.Length > 5 && state.Buttons[5],
+            GamepadButton.WheelButton7 => state.Buttons.Length > 6 && state.Buttons[6],
+            GamepadButton.WheelButton8 => state.Buttons.Length > 7 && state.Buttons[7],
+            GamepadButton.WheelButton9 => state.Buttons.Length > 8 && state.Buttons[8],
+            GamepadButton.WheelButton10 => state.Buttons.Length > 9 && state.Buttons[9],
+            GamepadButton.WheelButton11 => state.Buttons.Length > 10 && state.Buttons[10],
+            GamepadButton.WheelButton12 => state.Buttons.Length > 11 && state.Buttons[11],
+            GamepadButton.LeftPaddle => state.Buttons.Length > 12 && state.Buttons[12],
+            GamepadButton.RightPaddle => state.Buttons.Length > 13 && state.Buttons[13],
+            GamepadButton.WheelStart => state.Buttons.Length > 14 && state.Buttons[14],
+            GamepadButton.WheelSelect => state.Buttons.Length > 15 && state.Buttons[15],
+            GamepadButton.WheelDPadUp => state.PointOfViewControllers.Length > 0 && (state.PointOfViewControllers[0] >= 31500 || state.PointOfViewControllers[0] <= 4500),
+            GamepadButton.WheelDPadRight => state.PointOfViewControllers.Length > 0 && (state.PointOfViewControllers[0] >= 4500 && state.PointOfViewControllers[0] <= 13500),
+            GamepadButton.WheelDPadDown => state.PointOfViewControllers.Length > 0 && (state.PointOfViewControllers[0] >= 13500 && state.PointOfViewControllers[0] <= 22500),
+            GamepadButton.WheelDPadLeft => state.PointOfViewControllers.Length > 0 && (state.PointOfViewControllers[0] >= 22500 && state.PointOfViewControllers[0] <= 31500),
             _ => false
         };
     }
