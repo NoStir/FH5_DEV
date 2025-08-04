@@ -1,16 +1,24 @@
 using System.Timers;
 using SharpDX.XInput;
+using SharpDX.DirectInput;
 
 namespace MA_FH5Trainer.Resources.Keybinds;
 
 /// <summary>
-/// Manages gamepad input detection and state polling
+/// Manages gamepad and steering wheel input detection and state polling
 /// </summary>
 public static class GamepadManager
 {
     private static readonly Controller[] s_controllers = new Controller[4];
     private static readonly State[] s_previousStates = new State[4];
     private static readonly State[] s_currentStates = new State[4];
+    
+    // DirectInput for steering wheels
+    private static DirectInput? s_directInput;
+    private static readonly List<Joystick> s_steeringWheels = new();
+    private static readonly Dictionary<Joystick, JoystickState> s_previousWheelStates = new();
+    private static readonly Dictionary<Joystick, JoystickState> s_currentWheelStates = new();
+    
     private static System.Timers.Timer? s_pollTimer;
     private static bool s_isInitialized = false;
 
@@ -35,12 +43,15 @@ public static class GamepadManager
     }
 
     /// <summary>
-    /// Initializes gamepad polling
+    /// Initializes gamepad and steering wheel polling
     /// </summary>
     public static void Initialize()
     {
         if (s_isInitialized)
             return;
+
+        // Initialize DirectInput for steering wheels
+        InitializeSteeringWheels();
 
         s_pollTimer = new System.Timers.Timer(16); // ~60 FPS polling
         s_pollTimer.Elapsed += PollGamepads;
@@ -51,7 +62,7 @@ public static class GamepadManager
     }
 
     /// <summary>
-    /// Shuts down gamepad polling
+    /// Shuts down gamepad and steering wheel polling
     /// </summary>
     public static void Shutdown()
     {
@@ -61,6 +72,18 @@ public static class GamepadManager
         s_pollTimer?.Stop();
         s_pollTimer?.Dispose();
         s_pollTimer = null;
+
+        // Clean up DirectInput resources
+        foreach (var wheel in s_steeringWheels)
+        {
+            wheel?.Dispose();
+        }
+        s_steeringWheels.Clear();
+        s_previousWheelStates.Clear();
+        s_currentWheelStates.Clear();
+        
+        s_directInput?.Dispose();
+        s_directInput = null;
 
         s_isInitialized = false;
     }
@@ -123,6 +146,7 @@ public static class GamepadManager
     {
         try
         {
+            // Poll Xbox controllers
             for (int i = 0; i < 4; i++)
             {
                 if (!s_controllers[i].IsConnected)
@@ -136,6 +160,33 @@ public static class GamepadManager
                 {
                     // Check for button press events (transition from not pressed to pressed)
                     CheckButtonEvents(i);
+                }
+            }
+
+            // Poll steering wheels
+            foreach (var wheel in s_steeringWheels.ToArray()) // ToArray to avoid modification during iteration
+            {
+                try
+                {
+                    if (s_previousWheelStates.TryGetValue(wheel, out var prevState))
+                    {
+                        s_previousWheelStates[wheel] = s_currentWheelStates[wheel];
+                    }
+
+                    wheel.Poll();
+                    var currentState = wheel.GetCurrentState();
+                    s_currentWheelStates[wheel] = currentState;
+
+                    // Check for wheel button press events
+                    CheckWheelButtonEvents(wheel);
+                }
+                catch (Exception)
+                {
+                    // Wheel disconnected or error, remove it
+                    s_steeringWheels.Remove(wheel);
+                    s_previousWheelStates.Remove(wheel);
+                    s_currentWheelStates.Remove(wheel);
+                    wheel?.Dispose();
                 }
             }
         }
@@ -199,6 +250,70 @@ public static class GamepadManager
         }
     }
 
+    private static void CheckWheelButtonEvents(Joystick wheel)
+    {
+        if (!s_previousWheelStates.TryGetValue(wheel, out var previous) || 
+            !s_currentWheelStates.TryGetValue(wheel, out var current))
+            return;
+
+        // Check each wheel button for press events
+        CheckWheelButton(wheel, GamepadButton.WheelButton1, !previous.Buttons[0] && current.Buttons[0]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton2, !previous.Buttons[1] && current.Buttons[1]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton3, !previous.Buttons[2] && current.Buttons[2]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton4, !previous.Buttons[3] && current.Buttons[3]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton5, !previous.Buttons[4] && current.Buttons[4]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton6, !previous.Buttons[5] && current.Buttons[5]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton7, !previous.Buttons[6] && current.Buttons[6]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton8, !previous.Buttons[7] && current.Buttons[7]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton9, !previous.Buttons[8] && current.Buttons[8]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton10, !previous.Buttons[9] && current.Buttons[9]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton11, !previous.Buttons[10] && current.Buttons[10]);
+        CheckWheelButton(wheel, GamepadButton.WheelButton12, !previous.Buttons[11] && current.Buttons[11]);
+        CheckWheelButton(wheel, GamepadButton.LeftPaddle, !previous.Buttons[12] && current.Buttons[12]);
+        CheckWheelButton(wheel, GamepadButton.RightPaddle, !previous.Buttons[13] && current.Buttons[13]);
+        CheckWheelButton(wheel, GamepadButton.WheelStart, !previous.Buttons[14] && current.Buttons[14]);
+        CheckWheelButton(wheel, GamepadButton.WheelSelect, !previous.Buttons[15] && current.Buttons[15]);
+
+        // Check D-pad
+        var prevDPad = GetDPadFromPOV(previous.PointOfViewControllers[0]);
+        var currDPad = GetDPadFromPOV(current.PointOfViewControllers[0]);
+        
+        if (prevDPad != GamepadButton.WheelDPadUp && currDPad == GamepadButton.WheelDPadUp)
+            CheckWheelButton(wheel, GamepadButton.WheelDPadUp, true);
+        if (prevDPad != GamepadButton.WheelDPadDown && currDPad == GamepadButton.WheelDPadDown)
+            CheckWheelButton(wheel, GamepadButton.WheelDPadDown, true);
+        if (prevDPad != GamepadButton.WheelDPadLeft && currDPad == GamepadButton.WheelDPadLeft)
+            CheckWheelButton(wheel, GamepadButton.WheelDPadLeft, true);
+        if (prevDPad != GamepadButton.WheelDPadRight && currDPad == GamepadButton.WheelDPadRight)
+            CheckWheelButton(wheel, GamepadButton.WheelDPadRight, true);
+    }
+
+    private static GamepadButton GetDPadFromPOV(int pov)
+    {
+        if (pov == -1) return GamepadButton.None;
+        
+        if (pov >= 31500 || pov <= 4500) return GamepadButton.WheelDPadUp;
+        if (pov >= 4500 && pov <= 13500) return GamepadButton.WheelDPadRight;
+        if (pov >= 13500 && pov <= 22500) return GamepadButton.WheelDPadDown;
+        if (pov >= 22500 && pov <= 31500) return GamepadButton.WheelDPadLeft;
+        
+        return GamepadButton.None;
+    }
+
+    private static void CheckWheelButton(Joystick wheel, GamepadButton button, bool isPressed)
+    {
+        if (isPressed)
+        {
+            ButtonPressed?.Invoke(-1, button); // Use -1 to indicate wheel instead of gamepad controller
+            
+            // If we're in listening mode, also raise the AnyButtonPressed event
+            if (s_isListening)
+            {
+                AnyButtonPressed?.Invoke(-1, button);
+            }
+        }
+    }
+
     /// <summary>
     /// Gets a list of connected controller indices
     /// </summary>
@@ -234,4 +349,108 @@ public static class GamepadManager
     /// Gets whether the manager is currently listening for button presses
     /// </summary>
     public static bool IsListening => s_isListening;
+
+    /// <summary>
+    /// Initializes DirectInput and detects steering wheels
+    /// </summary>
+    private static void InitializeSteeringWheels()
+    {
+        try
+        {
+            s_directInput = new DirectInput();
+            
+            // Find all joystick devices that could be steering wheels
+            var joystickDevices = s_directInput.GetDevices(DeviceType.Joystick, DeviceEnumerationFlags.AllDevices);
+            
+            foreach (var deviceInstance in joystickDevices)
+            {
+                try
+                {
+                    var joystick = new Joystick(s_directInput, deviceInstance.InstanceGuid);
+                    
+                    // Check if this might be a steering wheel by looking for steering axis
+                    joystick.Properties.BufferSize = 128;
+                    joystick.Acquire();
+                    
+                    // Add to our list of steering wheels
+                    s_steeringWheels.Add(joystick);
+                    s_previousWheelStates[joystick] = new JoystickState();
+                    s_currentWheelStates[joystick] = new JoystickState();
+                }
+                catch (Exception)
+                {
+                    // Skip devices that can't be initialized
+                }
+            }
+        }
+        catch (Exception)
+        {
+            // DirectInput initialization failed, continue without steering wheel support
+        }
+    }
+
+    /// <summary>
+    /// Checks if any steering wheel has the specified button pressed
+    /// </summary>
+    /// <param name="button">The wheel button to check</param>
+    /// <returns>True if the button is pressed on any wheel</returns>
+    public static bool IsWheelButtonPressed(GamepadButton button)
+    {
+        if (!s_isInitialized || s_steeringWheels.Count == 0)
+            return false;
+
+        foreach (var wheel in s_steeringWheels)
+        {
+            if (IsWheelButtonPressed(wheel, button))
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Checks if a specific steering wheel has the specified button pressed
+    /// </summary>
+    /// <param name="wheel">The steering wheel joystick</param>
+    /// <param name="button">The button to check</param>
+    /// <returns>True if the button is pressed</returns>
+    private static bool IsWheelButtonPressed(Joystick wheel, GamepadButton button)
+    {
+        if (!s_currentWheelStates.TryGetValue(wheel, out var state))
+            return false;
+
+        return button switch
+        {
+            GamepadButton.WheelButton1 => state.Buttons[0],
+            GamepadButton.WheelButton2 => state.Buttons[1],
+            GamepadButton.WheelButton3 => state.Buttons[2],
+            GamepadButton.WheelButton4 => state.Buttons[3],
+            GamepadButton.WheelButton5 => state.Buttons[4],
+            GamepadButton.WheelButton6 => state.Buttons[5],
+            GamepadButton.WheelButton7 => state.Buttons[6],
+            GamepadButton.WheelButton8 => state.Buttons[7],
+            GamepadButton.WheelButton9 => state.Buttons[8],
+            GamepadButton.WheelButton10 => state.Buttons[9],
+            GamepadButton.WheelButton11 => state.Buttons[10],
+            GamepadButton.WheelButton12 => state.Buttons[11],
+            GamepadButton.LeftPaddle => state.Buttons[12], // Common paddle mapping
+            GamepadButton.RightPaddle => state.Buttons[13],
+            GamepadButton.WheelDPadUp => state.PointOfViewControllers[0] >= 31500 || state.PointOfViewControllers[0] <= 4500,
+            GamepadButton.WheelDPadRight => state.PointOfViewControllers[0] >= 4500 && state.PointOfViewControllers[0] <= 13500,
+            GamepadButton.WheelDPadDown => state.PointOfViewControllers[0] >= 13500 && state.PointOfViewControllers[0] <= 22500,
+            GamepadButton.WheelDPadLeft => state.PointOfViewControllers[0] >= 22500 && state.PointOfViewControllers[0] <= 31500,
+            GamepadButton.WheelStart => state.Buttons[14], // Common start button mapping
+            GamepadButton.WheelSelect => state.Buttons[15], // Common select button mapping
+            _ => false
+        };
+    }
+
+    /// <summary>
+    /// Gets a list of connected steering wheel names
+    /// </summary>
+    /// <returns>Array of connected steering wheel names</returns>
+    public static string[] GetConnectedSteeringWheels()
+    {
+        return s_steeringWheels.Where(w => w != null).Select(w => w.Information.ProductName).ToArray();
+    }
 }
