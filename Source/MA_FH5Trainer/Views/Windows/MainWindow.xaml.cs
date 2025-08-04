@@ -1,9 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 using MA_FH5Trainer.Resources.Keybinds;
 using MA_FH5Trainer.Resources.Theme;
 using MA_FH5Trainer.ViewModels.Windows;
@@ -14,6 +16,7 @@ public partial class MainWindow
 {
     private bool _isListeningForGamepadInput = false;
     private GlobalHotkey? _currentHotkeyBeingSet = null;
+    private DispatcherTimer? _gamepadListeningTimer = null;
 
     public MainWindow()
     {
@@ -38,6 +41,11 @@ public partial class MainWindow
     {
         // Unsubscribe from gamepad events
         GamepadManager.AnyButtonPressed -= OnGamepadButtonCaptured;
+        
+        // Clean up any active timer
+        _gamepadListeningTimer?.Stop();
+        _gamepadListeningTimer = null;
+        
         HotkeysManager.ShutdownSystemHook();
         base.OnClosed(e);
     }
@@ -144,6 +152,14 @@ public partial class MainWindow
             }
 
             // Start listening for gamepad input
+            var connectedControllers = GamepadManager.GetConnectedControllers();
+            if (connectedControllers.Length == 0)
+            {
+                MessageBox.Show("No gamepad connected. Please connect a gamepad and try again.", 
+                    "No Gamepad", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             _isListeningForGamepadInput = true;
             _currentHotkeyBeingSet = hotkey;
             
@@ -158,6 +174,19 @@ public partial class MainWindow
             }
             
             GamepadManager.StartListening();
+
+            // Set up timeout timer (10 seconds)
+            _gamepadListeningTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(10)
+            };
+            _gamepadListeningTimer.Tick += (s, args) =>
+            {
+                ResetGamepadListening();
+                MessageBox.Show("Gamepad input timeout. Please try again.", 
+                    "Timeout", MessageBoxButton.OK, MessageBoxImage.Information);
+            };
+            _gamepadListeningTimer.Start();
         }
     }
 
@@ -231,8 +260,10 @@ public partial class MainWindow
         // Run on UI thread
         Dispatcher.Invoke(() =>
         {
-            // Stop listening
+            // Stop listening and timer
             GamepadManager.StopListening();
+            _gamepadListeningTimer?.Stop();
+            _gamepadListeningTimer = null;
             _isListeningForGamepadInput = false;
 
             // Check if this button is already assigned
@@ -270,6 +301,10 @@ public partial class MainWindow
     {
         _isListeningForGamepadInput = false;
         GamepadManager.StopListening();
+        
+        // Stop and dispose timer
+        _gamepadListeningTimer?.Stop();
+        _gamepadListeningTimer = null;
         
         if (set != null)
         {
