@@ -163,12 +163,12 @@ public static partial class HotkeysManager
 
     public static bool CheckExists(Key key, ModifierKeys modifierKeys)
     {
-        return s_hotkeys.Any(globalHotkey => !globalHotkey.UseGamepad && globalHotkey.Key == key && globalHotkey.Modifier == modifierKeys);
+        return s_hotkeys.Any(globalHotkey => !globalHotkey.UseGamepad && !globalHotkey.UseSteeringWheel && globalHotkey.Key == key && globalHotkey.Modifier == modifierKeys);
     }
 
     public static bool CheckExists(GamepadButton gamepadButton)
     {
-        return s_hotkeys.Any(globalHotkey => globalHotkey.UseGamepad && globalHotkey.GamepadButton == gamepadButton);
+        return s_hotkeys.Any(globalHotkey => (globalHotkey.UseGamepad || globalHotkey.UseSteeringWheel) && globalHotkey.GamepadButton == gamepadButton);
     }
 
     private static readonly object s_checkLock = new object();
@@ -193,7 +193,15 @@ public static partial class HotkeysManager
                 {
                     bool shouldExecute = false;
 
-                    if (hotkey.UseGamepad)
+                    if (hotkey.UseSteeringWheel)
+                    {
+                        // Check steering wheel input
+                        if (hotkey.GamepadButton != GamepadButton.None && hotkey.CanExecute)
+                        {
+                            shouldExecute = GamepadManager.IsWheelButtonPressed(hotkey.GamepadButton);
+                        }
+                    }
+                    else if (hotkey.UseGamepad)
                     {
                         // Check gamepad input
                         if (hotkey.GamepadButton != GamepadButton.None && hotkey.CanExecute)
@@ -219,7 +227,16 @@ public static partial class HotkeysManager
                             
                         hotkey.IsPressed = true;
                         
-                        if (hotkey.UseGamepad)
+                        if (hotkey.UseSteeringWheel)
+                        {
+                            // For steering wheel, execute once per press and wait for release
+                            while (GamepadManager.IsWheelButtonPressed(hotkey.GamepadButton))
+                            {
+                                hotkey.Callback();
+                                await Task.Delay(hotkey.Interval);
+                            }
+                        }
+                        else if (hotkey.UseGamepad)
                         {
                             // For gamepad, execute once per press and wait for release
                             while (GamepadManager.IsButtonPressed(hotkey.GamepadButton))
