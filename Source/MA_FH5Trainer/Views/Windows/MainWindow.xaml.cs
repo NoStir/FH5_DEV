@@ -12,6 +12,9 @@ namespace MA_FH5Trainer.Views.Windows;
 
 public partial class MainWindow
 {
+    private bool _isListeningForGamepadInput = false;
+    private GlobalHotkey? _currentHotkeyBeingSet = null;
+
     public MainWindow()
     {
         Instance = this;
@@ -26,10 +29,15 @@ public partial class MainWindow
         ViewModel.MakeExpandersView();
         InitializeComponent();
         InitializeGamepadButtons();
+        
+        // Subscribe to gamepad button events for listening mode
+        GamepadManager.AnyButtonPressed += OnGamepadButtonCaptured;
     }
     
     protected override void OnClosed(EventArgs e)
     {
+        // Unsubscribe from gamepad events
+        GamepadManager.AnyButtonPressed -= OnGamepadButtonCaptured;
         HotkeysManager.ShutdownSystemHook();
         base.OnClosed(e);
     }
@@ -127,24 +135,29 @@ public partial class MainWindow
         }
         else
         {
-            // Handle gamepad input
-            if (GamepadButtonComboBox?.SelectedItem is not GamepadButton gamepadButton)
+            // Handle gamepad input with listening mode
+            if (_isListeningForGamepadInput)
             {
-                MessageBox.Show("No gamepad button selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                // Cancel listening mode
+                ResetGamepadListening();
                 return;
             }
 
-            if (HotkeysManager.CheckExists(gamepadButton))
+            // Start listening for gamepad input
+            _isListeningForGamepadInput = true;
+            _currentHotkeyBeingSet = hotkey;
+            
+            if (GamepadButtonTextBox != null)
             {
-                MessageBox.Show("Gamepad button already assigned!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                GamepadButtonTextBox.Text = "Listening... Press any gamepad button";
             }
-
-            hotkey.UseGamepad = true;
-            hotkey.GamepadButton = gamepadButton;
-            hotkey.Key = Key.None;
-            hotkey.Modifier = ModifierKeys.None;
-            hotkey.Hotkey = new MahApps.Metro.Controls.HotKey(Key.None);
+            
+            if (set != null)
+            {
+                set.Content = "CANCEL";
+            }
+            
+            GamepadManager.StartListening();
         }
     }
 
@@ -181,9 +194,11 @@ public partial class MainWindow
             {
                 GamepadInputBorder.Visibility = Visibility.Visible;
             }
-            if (GamepadButtonComboBox != null)
+            if (GamepadButtonTextBox != null)
             {
-                GamepadButtonComboBox.SelectedItem = hotkey.GamepadButton;
+                GamepadButtonTextBox.Text = hotkey.GamepadButton == GamepadButton.None 
+                    ? "None" 
+                    : hotkey.GamepadButton.ToString();
             }
         }
         else
@@ -208,20 +223,77 @@ public partial class MainWindow
         }
     }
 
+    private void OnGamepadButtonCaptured(int controllerIndex, GamepadButton button)
+    {
+        if (!_isListeningForGamepadInput || _currentHotkeyBeingSet == null)
+            return;
+
+        // Run on UI thread
+        Dispatcher.Invoke(() =>
+        {
+            // Stop listening
+            GamepadManager.StopListening();
+            _isListeningForGamepadInput = false;
+
+            // Check if this button is already assigned
+            if (HotkeysManager.CheckExists(button))
+            {
+                MessageBox.Show("Gamepad button already assigned!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ResetGamepadListening();
+                return;
+            }
+
+            // Set the hotkey
+            _currentHotkeyBeingSet.UseGamepad = true;
+            _currentHotkeyBeingSet.GamepadButton = button;
+            _currentHotkeyBeingSet.Key = Key.None;
+            _currentHotkeyBeingSet.Modifier = ModifierKeys.None;
+            _currentHotkeyBeingSet.Hotkey = new MahApps.Metro.Controls.HotKey(Key.None);
+
+            // Update the UI
+            if (GamepadButtonTextBox != null)
+            {
+                GamepadButtonTextBox.Text = button.ToString();
+            }
+
+            // Reset state
+            _currentHotkeyBeingSet = null;
+            if (set != null)
+            {
+                set.Content = "SET";
+                set.IsEnabled = true;
+            }
+        });
+    }
+
+    private void ResetGamepadListening()
+    {
+        _isListeningForGamepadInput = false;
+        GamepadManager.StopListening();
+        
+        if (set != null)
+        {
+            set.Content = "SET";
+            set.IsEnabled = true;
+        }
+        
+        if (GamepadButtonTextBox != null && _currentHotkeyBeingSet != null)
+        {
+            GamepadButtonTextBox.Text = _currentHotkeyBeingSet.GamepadButton == GamepadButton.None 
+                ? "None" 
+                : _currentHotkeyBeingSet.GamepadButton.ToString();
+        }
+        
+        _currentHotkeyBeingSet = null;
+    }
+
     private void InitializeGamepadButtons()
     {
-        if (GamepadButtonComboBox == null)
+        // Initialize gamepad button display
+        if (GamepadButtonTextBox != null)
         {
-            return;
+            GamepadButtonTextBox.Text = "None";
         }
-
-        // Populate gamepad button ComboBox
-        var gamepadButtons = Enum.GetValues<GamepadButton>()
-            .Where(b => b != GamepadButton.None)
-            .ToArray();
-        
-        GamepadButtonComboBox.ItemsSource = gamepadButtons;
-        GamepadButtonComboBox.SelectedIndex = 0;
     }
 
     private void InputType_Changed(object sender, RoutedEventArgs e)
