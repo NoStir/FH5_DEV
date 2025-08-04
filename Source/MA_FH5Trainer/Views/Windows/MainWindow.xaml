@@ -1,0 +1,367 @@
+﻿<mah:MetroWindow x:Class="MA_FH5Trainer.Views.Windows.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:local="clr-namespace:MA_FH5Trainer.Views.Windows"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 mc:Ignorable="d"
+                 d:DataContext="{d:DesignInstance local:MainWindow,IsDesignTimeCreatable=True}"
+                 Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
+                 Icon="../../Resources/Square150x150Logo.scale-200.png"
+                 MinHeight="816"
+                 MinWidth="800"
+                 MaxHeight="816"
+                 MaxWidth="800"
+                 ShowTitleBar="False"
+                 ShowCloseButton="False"
+                 ShowMinButton="False"
+                 ShowMaxRestoreButton="False"
+                 BorderThickness="0"
+                 AllowsTransparency="True"
+                 Background="Transparent"
+                 WindowStyle="None"
+                 ResizeMode="NoResize"
+                 WindowStartupLocation="CenterScreen"
+                 Closing="MainWindow_OnClosing"
+                 MouseDown="MainWindow_OnMouseDown">
+
+    <Border CornerRadius="{Binding ViewModel.WindowCornerRadius}"
+            Background="{Binding Theming.MainColour}">
+
+        <Grid>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        Background="{Binding Theming.DarkColour}"
+                        CornerRadius="{Binding ViewModel.TopBarCornerRadius}" />
+
+                <Border Grid.Column="0"
+                        Grid.Row="1"
+                        Background="{Binding Theming.DarkishColour}"
+                        CornerRadius="{Binding ViewModel.SideBarCornerRadius}" />
+
+                <StackPanel Grid.Row="0" Grid.Column="0" Margin="10, 0"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left">
+
+                    <Border CornerRadius="2" Margin="0 0 8 0" Width="24" VerticalAlignment="Center" Height="24" >
+                        <Border.Background>
+                            <ImageBrush Stretch="Fill" ImageSource="../../Resources/Square150x150Logo.scale-200.png"/>
+                        </Border.Background>
+                    </Border>
+
+                    <TextBlock Text="{Binding ViewModel.ApplicationTitle}"
+                               VerticalAlignment="Center"
+                               FontSize="14.5"/>
+
+                </StackPanel>
+
+                <TextBlock Grid.Column="1"
+                           Grid.Row="0"
+                           Margin="10 0 0 0"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           FontWeight="Medium"
+                           FontSize="11.5"
+                           TextWrapping="Wrap"><Run Text="This cheat is 100% free. If you paid, you were scammed. Original published by the"/><Run Text=" Discord."/><LineBreak/><Run Text="Developed by @merikaaaaa on Discord. Keypad support added by @purrspire(DC)/@NoStir(GH)"/></TextBlock>
+
+                <StackPanel Grid.Column="1"
+                            Grid.Row="0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="10 0"
+                            Orientation="Horizontal">
+
+                    <Button Tag="1"
+                            Focusable="False"
+                            BorderThickness="0"
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            Background="{Binding Theming.LightColour, Mode=OneWay}"
+                            Width="24"
+                            Height="24"
+                            Content="____"
+                            AutomationProperties.AutomationId="Minimize"
+                            AutomationProperties.Name="Minimize"
+                            Click="WindowStateAction_OnClick" />
+
+                    <Button Tag="2"
+                            Focusable="False"
+                            Margin="8 0 0 0"
+                            BorderThickness="0"
+                            VerticalAlignment="Center"
+                            Background="{Binding Theming.LightColour, Mode=OneWay}"
+                            Width="24"
+                            Height="24"
+                            Content="X"
+                            Foreground="White"
+                            AutomationProperties.AutomationId="Close"
+                            AutomationProperties.Name="Close"
+                            Click="WindowStateAction_OnClick" />
+
+                </StackPanel>
+
+                <StackPanel Grid.Column="0"
+                            Grid.Row="1"
+                            Margin="10, 5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top">
+
+                    <Label Padding="0"
+                           FontSize="13.5"
+                           FontWeight="Bold"
+                           Content="Game Title"/>
+
+                    <Label Padding="0"
+                           FontSize="12.5"
+                           Content="{Binding ViewModel.ProcessNameText}"/>
+
+                    <Label Padding="0"
+                           FontSize="13.5"
+                           FontWeight="Bold"
+                           Content="Process ID"/>
+
+                    <Label Padding="0"
+                           FontSize="12.5"
+                           Content="{Binding ViewModel.ProcessIdText}"/>
+
+                    <Label Padding="0"
+                           FontSize="13.5"
+                           FontWeight="Bold"
+                           Content="Platform"/>
+
+                    <Label Padding="0"
+                           FontSize="12.5"
+                           Content="{Binding ViewModel.PlatformText}"/>
+
+                    <Label Padding="0"
+                           FontSize="13.5"
+                           FontWeight="Bold"
+                           Content="Version"/>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <Label Padding="0"
+                               FontSize="12.5"
+                               VerticalAlignment="Center"
+                               Content="{Binding ViewModel.VersionText}"/>
+
+                    </StackPanel>
+
+                    <Label Padding="0"
+                           FontSize="13.5"
+                           FontWeight="Bold"
+                           Content="Trainer Version"/>
+
+                    <Label Padding="0"
+                           FontSize="12.5"
+                           Content="{Binding ViewModel.TrainerVersion}"/>
+
+                    <Label Padding="0"
+                           FontSize="13.5"
+                           FontWeight="Bold"
+                           Content="Game Status"/>
+
+                    <Label Padding="0"
+                           FontSize="12.5"
+                           Content="{Binding ViewModel.AttachedText}"
+                           Foreground="{Binding ViewModel.AttachedBrush}"/>
+
+                    <Rectangle Height="1" Margin="0 8" Fill="White"/>
+
+                    <Label Padding="0"
+                           FontSize="13.5"
+                           FontWeight="Bold"
+                           Content="Cheat"/>
+
+                    <ComboBox BorderThickness="0"
+                              Margin="0 4 0 0"
+                              ItemsSource="{Binding ViewModel.Hotkeys}"
+                              SelectedItem="{Binding ViewModel.SelectedHotkey, Mode=TwoWay}"
+                              DisplayMemberPath="Name"
+                              SelectionChanged="ComboBox_SelectionChanged"
+                              IsEnabled="{Binding ViewModel.HotkeysEnabled, Mode=OneWay}"
+                              Background="{Binding Theming.DarkerColour, Mode=OneWay}"
+                              mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"/>
+
+                    <Label Padding="0"
+                           FontSize="13.5"
+                           FontWeight="Bold"
+                           Margin="0 4 0 0"
+                           Content="Set Cheat Hotkey"/>
+
+                    <!-- Input Type Selection -->
+                    <Grid Margin="0 4 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <RadioButton x:Name="KeyboardInputRadio" 
+                                   Content="Keyboard" 
+                                   IsChecked="True"
+                                   Checked="InputType_Changed"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Center"/>
+                        <RadioButton x:Name="GamepadInputRadio" 
+                                   Content="Gamepad" 
+                                   Checked="InputType_Changed"
+                                   Grid.Column="1"
+                                   HorizontalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Keyboard Input -->
+                        <Border x:Name="KeyboardInputBorder"
+                                CornerRadius="{StaticResource ControlCornerRadius}" 
+                                Padding="2"
+                                Margin="0 4 0 0"
+                                HorizontalAlignment="Stretch"
+                                Background="{Binding Theming.DarkerColour, Mode=OneWay}"
+                                Visibility="Visible">
+
+                            <mah:HotKeyBox
+                                x:Name="HotKeyBox"
+                                BorderThickness="0"
+                                mah:TextBoxHelper.Watermark="None"
+                                HorizontalAlignment="Stretch"
+                                HotKey="{Binding ViewModel.SelectedHotkey.Hotkey, Mode=OneWay}"
+                                IsEnabled="{Binding ViewModel.HotkeysEnabled, Mode=OneWay}"
+                                Background="{Binding Theming.DarkerColour, Mode=OneWay}"
+                                mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"/>
+
+                        </Border>
+
+                        <!-- Gamepad Input -->
+                        <Border x:Name="GamepadInputBorder"
+                                CornerRadius="{StaticResource ControlCornerRadius}" 
+                                Padding="2"
+                                Margin="0 4 0 0"
+                                HorizontalAlignment="Stretch"
+                                Background="{Binding Theming.DarkerColour, Mode=OneWay}"
+                                Visibility="Collapsed">
+
+                            <ComboBox x:Name="GamepadButtonComboBox"
+                                    BorderThickness="0"
+                                    HorizontalAlignment="Stretch"
+                                    IsEnabled="{Binding ViewModel.HotkeysEnabled, Mode=OneWay}"
+                                    Background="{Binding Theming.DarkerColour, Mode=OneWay}"
+                                    mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"/>
+
+                        </Border>
+
+                        <Button Content="SET"
+                                Margin="8 4 0 0"
+                                Grid.Column="1"
+                                x:Name="set"
+                                DataContext="{Binding ViewModel.SelectedHotkey}"
+                                Click="ButtonBase_OnClick"
+                                mah:ControlsHelper.FocusBorderThickness="0"
+                                mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                                Background="{DynamicResource MahApps.Brushes.AccentBase}"
+                                BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}"/>
+
+                    </Grid>
+
+                    <Button Content="Save All Hotkeys"
+                            Margin="0 8 0 0"
+                            Click="Button_Click"
+                            mah:ControlsHelper.FocusBorderThickness="0"
+                            mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                            Background="{DynamicResource MahApps.Brushes.AccentBase}"
+                            BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}"/>
+
+                </StackPanel>
+
+                <StackPanel Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="12, 0, 12, 12"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Bottom">
+
+                    <Button Content="Donate to @merikaaaaa"
+                            Command="{Binding ViewModel.OpenURLCommand}"
+                            CommandParameter="https://ko-fi.com/merikaaaaa"
+                            mah:ControlsHelper.FocusBorderThickness="0"
+                            mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                            Background="DarkGoldenrod"
+                            BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}"/>
+
+                    <Rectangle Height="1" Margin="0 8" Fill="White"/>
+
+                    <Button Content="Check for updates"
+                            Command="{Binding ViewModel.CheckUpdates_CommandCommand}"
+                            mah:ControlsHelper.FocusBorderThickness="0"
+                            mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                            Background="{DynamicResource MahApps.Brushes.AccentBase}"
+                            BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}"/>
+
+                    <Rectangle Height="1" Margin="0 8" Fill="White"/>
+
+                    <Button Content="FH5 Emote ID's"
+                            Command="{Binding ViewModel.OpenURLCommand}"
+                            CommandParameter="https://gist.github.com/szaaamerik/32beaf577c863161a35618a20eac2463"
+                            mah:ControlsHelper.FocusBorderThickness="0"
+                            mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                            Background="DimGray"
+                            BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}"/>
+
+                    <Button Content="Glowing Paint Instructions"
+                            Margin="0 8 0 0"
+                            Command="{Binding ViewModel.OpenURLCommand}"
+                            CommandParameter="https://gist.github.com/szaaamerik/c822c4544e789085c80316406daa7540"
+                            mah:ControlsHelper.FocusBorderThickness="0"
+                            mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                            Background="DimGray"
+                            BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}"/>
+
+                    <Rectangle Height="1" Margin="0 8" Fill="White"/>
+
+                    <Button Content="Merika's GitHub"
+                            Command="{Binding ViewModel.OpenURLCommand}"
+                            CommandParameter="https://github.com/szaaamerik"
+                            mah:ControlsHelper.FocusBorderThickness="0"
+                            mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                            Background="{DynamicResource MahApps.Brushes.AccentBase}"
+                            BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}"/>
+
+                    <Button Content="Merika's Discord"
+                            Margin="0 8 0 0"
+                            Command="{Binding ViewModel.OpenURLCommand}"
+                            CommandParameter="https://discord.gg/rHzev9brJ3"
+                            mah:ControlsHelper.FocusBorderThickness="0"
+                            mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                            Background="{DynamicResource MahApps.Brushes.AccentBase}"
+                            BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}"/>
+
+                </StackPanel>
+
+                <Frame Grid.Row="1" Grid.Column="1"
+                       Content="{Binding ViewModel.ExpandersView, Mode=OneWay}"
+                       NavigationUIVisibility="Hidden"
+                       JournalOwnership="OwnsJournal" />
+
+            </Grid>
+
+        </Grid>
+    </Border>
+</mah:MetroWindow>

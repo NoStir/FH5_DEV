@@ -1,0 +1,29 @@
+{
+  "runtimeOptions": {
+    "tfm": "net8.0",
+    "frameworks": [
+      {
+        "name": "Microsoft.NETCore.App",
+        "version": "8.0.15"
+      },
+      {
+        "name": "Microsoft.WindowsDesktop.App",
+        "version": "8.0.15"
+      }
+    ],
+    "additionalProbingPaths": [
+      "C:\\Users\\Falafel\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Falafel\\.nuget\\packages",
+      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+    ],
+    "configProperties": {
+      "System.Diagnostics.Tracing.EventSource.IsSupported": false,
+      "System.Net.Http.EnableActivityPropagation": false,
+      "System.Reflection.Metadata.MetadataUpdater.IsSupported": false,
+      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
+      "System.Text.Encoding.EnableUnsafeUTF7Encoding": false,
+      "CSWINRT_USE_WINDOWS_UI_XAML_PROJECTIONS": false,
+      "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true
+    }
+  }
+}

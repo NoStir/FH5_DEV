@@ -1,0 +1,386 @@
+﻿<Page x:Class="MA_FH5Trainer.Views.ExpandersView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:MA_FH5Trainer.Views"
+      mc:Ignorable="d"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:subPages="clr-namespace:MA_FH5Trainer.Views.SubPages.SelfVehicle"
+      xmlns:tnPages="clr-namespace:MA_FH5Trainer.Views.SubPages.Tuning"
+      xmlns:converters="clr-namespace:MA_FH5Trainer.Converters"
+      Title="ExpandersView" 
+      d:DataContext="{d:DesignInstance local:ExpandersView,IsDesignTimeCreatable=True}"
+      d:DesignHeight="450" 
+      d:DesignWidth="800">
+    <Page.Resources>
+        <converters:TypeToInstanceConverter x:Key="LocalConverter"/>
+    </Page.Resources>
+
+     <ScrollViewer Margin="0 10 0 10">
+         <ScrollViewer.Resources>
+             <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+                 <Setter Property="OverridesDefaultStyle" Value="true" />
+                 <Setter Property="Template">
+                     <Setter.Value>
+                         <ControlTemplate TargetType="{x:Type Thumb}">
+                             <Border x:Name="ScrollBorder"
+                                     Background="{Binding Theming.LightColour}"
+                                     CornerRadius="{StaticResource ControlCornerRadius}" />
+
+                             <ControlTemplate.Triggers>
+                                 <Trigger Property="IsMouseOver" Value="true">
+                                     <Setter TargetName="ScrollBorder"
+                                             Property="Background"
+                                             Value="{Binding Theming.LighterColour}" />
+                                 </Trigger>
+                             </ControlTemplate.Triggers>
+                         </ControlTemplate>
+                     </Setter.Value>
+                 </Setter>
+             </Style>
+
+             <Style TargetType="ScrollBar">
+                 <Setter Property="Template">
+                     <Setter.Value>
+                         <ControlTemplate TargetType="ScrollBar">
+                             <Grid>
+                                 <Border x:Name="PART_Backing"
+                                         Background="{Binding Theming.DarkerColour}"
+                                         Width="10"
+                                         Margin="0 0 5 0"
+                                         CornerRadius="{StaticResource ControlCornerRadius}">
+
+                                     <Track x:Name="PART_Track"
+                                            IsDirectionReversed="True">
+                                         <Track.Thumb>
+                                             <Thumb Style="{StaticResource ScrollBarThumb}" />
+                                         </Track.Thumb>
+                                     </Track>
+
+                                 </Border>
+                             </Grid>
+                         </ControlTemplate>
+                     </Setter.Value>
+                 </Setter>
+             </Style>
+         </ScrollViewer.Resources>
+         
+         <StackPanel>
+
+             <Expander x:Name="AutoshowExpander"
+                       Header="Autoshow"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:Autoshow}, Mode=OneWay}" />
+             </Expander>
+
+
+             <Expander x:Name="GarageExpander"
+                       Header="Garage"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:Garage}, Mode=OneWay}" />
+             </Expander>
+
+
+             <Expander x:Name="HandlingExpander"
+                       Header="Speedhack"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:Handling}, Mode=OneWay}" />
+             </Expander>
+             <Expander x:Name="UnlocksExpander"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       Header="{DynamicResource Unlocks}"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour, Mode=OneWay}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:Unlocks}, Mode=OneWay}" />
+             </Expander>
+             <Expander x:Name="WheelspinsExpander"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       Header="Wheelspins"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour, Mode=OneWay}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:Wheelspins}, Mode=OneWay}" />
+             </Expander>
+             <Expander x:Name="TimerFreezesExpander"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       Header="Timer Freezes"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour, Mode=OneWay}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:TimerFreezes}, Mode=OneWay}" />
+             </Expander>
+
+             <Expander x:Name="PhotoModeExpander"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       Header="{DynamicResource PhotoMode}"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:PhotoMode}, Mode=OneWay}" />
+             </Expander>
+             
+             <Expander x:Name="EnvironmentExpander"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       Header="World"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:Environment}, Mode=OneWay}" />
+             </Expander>
+
+             <Expander x:Name="CustomizationExpander"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       Header="{DynamicResource Customization}"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10">
+
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:Customization}, Mode=OneWay}" />
+             </Expander>
+
+
+             <Expander x:Name="MiscExpander"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       Header="EXPERIMENTAL/UNSTABLE"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:Misc}, Mode=OneWay}" />
+             </Expander>
+
+
+             <Expander x:Name="MultiExpander"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       Header="Multipliers"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:Multipliers}, Mode=OneWay}" />
+             </Expander>
+
+
+             <Expander x:Name="CameraExpander"
+                       BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       Header="{DynamicResource Camera}"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10">
+
+                 <Frame
+                     Content="{Binding Converter={StaticResource LocalConverter}, 
+                            ConverterParameter={x:Type subPages:Camera}, Mode=OneWay}" />
+             </Expander>
+
+             <Expander BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       Header="Tuning (Tires)"
+                       >
+                 <Frame Content="{Binding Converter={StaticResource LocalConverter}, 
+                        ConverterParameter={x:Type tnPages:Tires}, Mode=OneWay}"/>
+             </Expander>
+
+             <Expander BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10"
+                       Header="Tuning (Gearing)"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       >
+                 <Frame Content="{Binding Converter={StaticResource LocalConverter}, 
+                        ConverterParameter={x:Type tnPages:Gearing}, Mode=OneWay}"/>
+                 
+             </Expander>
+             
+             <Expander BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       Header="Tuning (Alignment)"
+                       >
+                 <Frame Content="{Binding Converter={StaticResource LocalConverter}, 
+                        ConverterParameter={x:Type tnPages:Alignment}, Mode=OneWay}"/>
+
+             </Expander>
+
+             <Expander BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       Header="Tuning (Springs)">
+                 <Frame Content="{Binding Converter={StaticResource LocalConverter}, 
+                        ConverterParameter={x:Type tnPages:Springs}, Mode=OneWay}"/>
+                 
+             </Expander>
+
+             <Expander BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       Header="Tuning (Damping)"
+                       >
+                 <Frame Content="{Binding Converter={StaticResource LocalConverter}, 
+                        ConverterParameter={x:Type tnPages:Damping}, Mode=OneWay}"/>
+                 
+             </Expander>
+
+             <Expander BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       Header="Tuning (Aero)"
+                       >
+                 <Frame Content="{Binding Converter={StaticResource LocalConverter}, 
+                        ConverterParameter={x:Type tnPages:Aero}, Mode=OneWay}"/>
+                 
+             </Expander>
+
+             <Expander BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 10"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       Header="Tuning (Steering)"
+                       >
+                
+                 <Frame Content="{Binding Converter={StaticResource LocalConverter}, 
+                        ConverterParameter={x:Type tnPages:Steering}, Mode=OneWay}"/>
+                 
+             </Expander>
+             
+             <Expander BorderBrush="{Binding Theming.DarkerColour}"
+                       BorderThickness="{StaticResource ControlBorderThickness}"
+                       mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"
+                       mah:HeaderedControlHelper.HeaderFontWeight="Bold"
+                       IsEnabled="{Binding ViewModel.Attached}"
+                       mah:HeaderedControlHelper.HeaderFontSize="11.5"
+                       mah:HeaderedControlHelper.HeaderBackground="{Binding Theming.DarkerColour}"
+                       Margin="10 0 10 0"
+                       Header="Tuning (Miscellaneous)"
+                       >
+                 
+                 <Frame Content="{Binding Converter={StaticResource LocalConverter}, 
+                  ConverterParameter={x:Type tnPages:Others}, Mode=OneWay}"/>
+             </Expander>
+         </StackPanel>
+     </ScrollViewer>
+</Page>
