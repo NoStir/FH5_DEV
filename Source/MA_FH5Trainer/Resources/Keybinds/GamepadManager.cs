@@ -19,6 +19,13 @@ public static class GamepadManager
     /// </summary>
     public static event Action<int, GamepadButton>? ButtonPressed;
 
+    /// <summary>
+    /// Event raised when any gamepad button is pressed during listening mode
+    /// </summary>
+    public static event Action<int, GamepadButton>? AnyButtonPressed;
+
+    private static bool s_isListening = false;
+
     static GamepadManager()
     {
         for (int i = 0; i < 4; i++)
@@ -183,6 +190,12 @@ public static class GamepadManager
         if (isPressed)
         {
             ButtonPressed?.Invoke(controllerIndex, button);
+            
+            // If we're in listening mode, also raise the AnyButtonPressed event
+            if (s_isListening)
+            {
+                AnyButtonPressed?.Invoke(controllerIndex, button);
+            }
         }
     }
 
@@ -200,4 +213,25 @@ public static class GamepadManager
         }
         return connected.ToArray();
     }
+
+    /// <summary>
+    /// Starts listening for any gamepad button press
+    /// </summary>
+    public static void StartListening()
+    {
+        s_isListening = true;
+    }
+
+    /// <summary>
+    /// Stops listening for gamepad button presses
+    /// </summary>
+    public static void StopListening()
+    {
+        s_isListening = false;
+    }
+
+    /// <summary>
+    /// Gets whether the manager is currently listening for button presses
+    /// </summary>
+    public static bool IsListening => s_isListening;
 }
