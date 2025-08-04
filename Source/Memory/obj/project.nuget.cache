@@ -1,15 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "l84kWpKz190=",
+  "dgSpecHash": "EvK2LZogKqaxZz8WBcgJjUwKQnTRC+0e23GAJbxKL+j8KHFO+bSTX78ETuRHuqsst28WJmSXYk7BkYgFIEJ9Hw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj",
+  "projectFilePath": "/home/runner/work/FH5_DEV/FH5_DEV/Source/Memory/Memory.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Falafel\\.nuget\\packages\\reloaded.memory\\9.1.0\\reloaded.memory.9.1.0.nupkg.sha512",
-    "C:\\Users\\Falafel\\.nuget\\packages\\reloaded.memory.sigscan\\3.1.9\\reloaded.memory.sigscan.3.1.9.nupkg.sha512",
-    "C:\\Users\\Falafel\\.nuget\\packages\\reloaded.memory.sigscan.definitions\\1.1.1\\reloaded.memory.sigscan.definitions.1.1.1.nupkg.sha512",
-    "C:\\Users\\Falafel\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\8.0.15\\microsoft.netcore.app.runtime.win-x64.8.0.15.nupkg.sha512",
-    "C:\\Users\\Falafel\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\8.0.15\\microsoft.windowsdesktop.app.runtime.win-x64.8.0.15.nupkg.sha512",
-    "C:\\Users\\Falafel\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\8.0.15\\microsoft.aspnetcore.app.runtime.win-x64.8.0.15.nupkg.sha512"
+    "/home/runner/.nuget/packages/reloaded.memory/9.1.0/reloaded.memory.9.1.0.nupkg.sha512",
+    "/home/runner/.nuget/packages/reloaded.memory.sigscan/3.1.9/reloaded.memory.sigscan.3.1.9.nupkg.sha512",
+    "/home/runner/.nuget/packages/reloaded.memory.sigscan.definitions/1.1.1/reloaded.memory.sigscan.definitions.1.1.1.nupkg.sha512"
   ],
   "logs": []
 }

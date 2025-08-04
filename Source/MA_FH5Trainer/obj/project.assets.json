@@ -642,7 +642,7 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.NET.ILLink.Tasks/8.0.15": {
+      "Microsoft.NET.ILLink.Tasks/8.0.18": {
         "type": "package",
         "build": {
           "build/Microsoft.NET.ILLink.Tasks.props": {}
@@ -971,23 +971,6 @@
         "runtime": {
           "lib/netstandard1.1/SharpDX.dll": {
             "related": ".pdb"
-          }
-        }
-      },
-      "SharpDX.DirectInput/4.2.0": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "SharpDX": "4.2.0"
-        },
-        "compile": {
-          "lib/netstandard1.3/SharpDX.DirectInput.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard1.3/SharpDX.DirectInput.dll": {
-            "related": ".pdb;.xml"
           }
         }
       },
@@ -2798,7 +2781,7 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.NET.ILLink.Tasks/8.0.15": {
+      "Microsoft.NET.ILLink.Tasks/8.0.18": {
         "type": "package",
         "build": {
           "build/Microsoft.NET.ILLink.Tasks.props": {}
@@ -3351,23 +3334,6 @@
         "runtime": {
           "lib/netstandard1.1/SharpDX.dll": {
             "related": ".pdb"
-          }
-        }
-      },
-      "SharpDX.DirectInput/4.2.0": {
-        "type": "package",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "SharpDX": "4.2.0"
-        },
-        "compile": {
-          "lib/netstandard1.3/SharpDX.DirectInput.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard1.3/SharpDX.DirectInput.dll": {
-            "related": ".pdb;.xml"
           }
         }
       },
@@ -5559,10 +5525,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.NET.ILLink.Tasks/8.0.15": {
-      "sha512": "s4eXlcRGyHeCgFUGQnhq0e/SCHBPp0jOHgMqZg3fQ2OCHJSm1aOUhI6RFWuVIcEb9ig2WgI2kWukk8wu72EbUQ==",
+    "Microsoft.NET.ILLink.Tasks/8.0.18": {
+      "sha512": "OiXqr2YIBEV9dsAWEtasK470ALyJ0VxJ9k4MotOxlWV6HeEgrJKYMW4HHj1OCCXvqE0/A25wEKPkpfiBARgDZA==",
       "type": "package",
-      "path": "microsoft.net.illink.tasks/8.0.15",
+      "path": "microsoft.net.illink.tasks/8.0.18",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -5576,7 +5542,7 @@
         "build/Microsoft.NET.ILLink.Analyzers.props",
         "build/Microsoft.NET.ILLink.Tasks.props",
         "build/Microsoft.NET.ILLink.targets",
-        "microsoft.net.illink.tasks.8.0.15.nupkg.sha512",
+        "microsoft.net.illink.tasks.8.0.18.nupkg.sha512",
         "microsoft.net.illink.tasks.nuspec",
         "tools/net472/ILLink.Tasks.dll",
         "tools/net472/ILLink.Tasks.dll.config",
@@ -6601,26 +6567,6 @@
         "lib/uap10.0/SharpDX.pri",
         "sharpdx.4.2.0.nupkg.sha512",
         "sharpdx.nuspec"
-      ]
-    },
-    "SharpDX.DirectInput/4.2.0": {
-      "sha512": "is6Lm9zULyeTbUaLXktF+MwzmUYE8jofhA+6qgR1HBIyRJ/c2rZbeG1VvvGf4w6ktfq/q3AvUWTNzwgdU/+XOg==",
-      "type": "package",
-      "path": "sharpdx.directinput/4.2.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net40/SharpDX.DirectInput.dll",
-        "lib/net40/SharpDX.DirectInput.pdb",
-        "lib/net40/SharpDX.DirectInput.xml",
-        "lib/net45/SharpDX.DirectInput.dll",
-        "lib/net45/SharpDX.DirectInput.pdb",
-        "lib/net45/SharpDX.DirectInput.xml",
-        "lib/netstandard1.3/SharpDX.DirectInput.dll",
-        "lib/netstandard1.3/SharpDX.DirectInput.pdb",
-        "lib/netstandard1.3/SharpDX.DirectInput.xml",
-        "sharpdx.directinput.4.2.0.nupkg.sha512",
-        "sharpdx.directinput.nuspec"
       ]
     },
     "SharpDX.XInput/4.2.0": {
@@ -10053,46 +9999,38 @@
       "MahApps.Metro >= 2.4.10",
       "Memory >= 1.0.0",
       "Microsoft.Extensions.Hosting >= 8.0.0",
-      "Microsoft.NET.ILLink.Tasks >= 8.0.15",
-      "SharpDX.DirectInput >= 4.2.0",
+      "Microsoft.NET.ILLink.Tasks >= 8.0.18",
       "SharpDX.XInput >= 4.2.0",
       "System.Management >= 8.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Falafel\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/home/runner/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\MA_FH5Trainer.csproj",
+      "projectUniqueName": "/home/runner/work/FH5_DEV/FH5_DEV/Source/MA_FH5Trainer/MA_FH5Trainer.csproj",
       "projectName": "MA_FH5Trainer",
-      "projectPath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\MA_FH5Trainer.csproj",
-      "packagesPath": "C:\\Users\\Falafel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\obj\\",
+      "projectPath": "/home/runner/work/FH5_DEV/FH5_DEV/Source/MA_FH5Trainer/MA_FH5Trainer.csproj",
+      "packagesPath": "/home/runner/.nuget/packages/",
+      "outputPath": "/home/runner/work/FH5_DEV/FH5_DEV/Source/MA_FH5Trainer/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Falafel\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/runner/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0-windows"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "projectReferences": {
-            "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj": {
-              "projectPath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj",
+            "/home/runner/work/FH5_DEV/FH5_DEV/Source/Memory/Memory.csproj": {
+              "projectPath": "/home/runner/work/FH5_DEV/FH5_DEV/Source/Memory/Memory.csproj",
               "privateAssets": "none"
             }
           }
@@ -10103,13 +10041,7 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.200"
+      }
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -10130,12 +10062,8 @@
           "Microsoft.NET.ILLink.Tasks": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[8.0.15, )",
+            "version": "[8.0.18, )",
             "autoReferenced": true
-          },
-          "SharpDX.DirectInput": {
-            "target": "Package",
-            "version": "[4.2.0, )"
           },
           "SharpDX.XInput": {
             "target": "Package",
@@ -10160,26 +10088,23 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-            "version": "[8.0.15, 8.0.15]"
+            "version": "[8.0.18, 8.0.18]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[8.0.18, 8.0.18]"
           },
           {
             "name": "Microsoft.NETCore.App.Runtime.win-x64",
-            "version": "[8.0.15, 8.0.15]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-            "version": "[8.0.15, 8.0.15]"
+            "version": "[8.0.18, 8.0.18]"
           }
         ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
-          },
-          "Microsoft.WindowsDesktop.App.WPF": {
-            "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.118/PortableRuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {
