@@ -14,10 +14,9 @@ namespace MA_FH5Trainer.Views.Windows;
 
 public partial class MainWindow
 {
-    private bool _isListeningForGamepadInput = false;
-    private bool _isListeningForSteeringWheelInput = false;
+    private bool _isListeningForAnyInput = false;
     private GlobalHotkey? _currentHotkeyBeingSet = null;
-    private DispatcherTimer? _gamepadListeningTimer = null;
+    private DispatcherTimer? _inputListeningTimer = null;
 
     public MainWindow()
     {
@@ -32,22 +31,21 @@ public partial class MainWindow
 
         ViewModel.MakeExpandersView();
         InitializeComponent();
-        InitializeGamepadButtons();
+        InitializeUnifiedInput();
         
         // Subscribe to gamepad button events for listening mode
-        GamepadManager.AnyButtonPressed += OnGamepadButtonCaptured;
+        GamepadManager.AnyButtonPressed += OnAnyInputCaptured;
     }
     
     protected override void OnClosed(EventArgs e)
     {
         // Unsubscribe from gamepad events
-        GamepadManager.AnyButtonPressed -= OnGamepadButtonCaptured;
+        GamepadManager.AnyButtonPressed -= OnAnyInputCaptured;
         
         // Clean up any active timer and reset listening states
-        _gamepadListeningTimer?.Stop();
-        _gamepadListeningTimer = null;
-        _isListeningForGamepadInput = false;
-        _isListeningForSteeringWheelInput = false;
+        _inputListeningTimer?.Stop();
+        _inputListeningTimer = null;
+        _isListeningForAnyInput = false;
         
         HotkeysManager.ShutdownSystemHook();
         base.OnClosed(e);
@@ -123,122 +121,45 @@ public partial class MainWindow
             return;
         }
 
-        if (KeyboardInputRadio?.IsChecked == true)
+        if (_isListeningForAnyInput)
         {
-            // Handle keyboard input
-            if (HotKeyBox?.HotKey == null)
-            {
-                MessageBox.Show("No hotkey selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (HotkeysManager.CheckExists(HotKeyBox.HotKey.Key, HotKeyBox.HotKey.ModifierKeys))
-            {
-                MessageBox.Show("Hotkey already exists!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            hotkey.UseGamepad = false;
-            hotkey.UseSteeringWheel = false;
-            hotkey.Key = HotKeyBox.HotKey.Key;
-            hotkey.Modifier = HotKeyBox.HotKey.ModifierKeys;
-            hotkey.GamepadButton = GamepadButton.None;
-            hotkey.Hotkey = HotKeyBox.HotKey;
+            // Cancel listening mode
+            ResetInputListening();
+            return;
         }
-        else if (GamepadInputRadio?.IsChecked == true)
+
+        // Start listening for any input type
+        _isListeningForAnyInput = true;
+        _currentHotkeyBeingSet = hotkey;
+        
+        if (UnifiedInputTextBox != null)
         {
-            // Handle gamepad input with listening mode
-            if (_isListeningForGamepadInput)
-            {
-                // Cancel listening mode
-                ResetGamepadListening();
-                return;
-            }
-
-            // Start listening for gamepad input
-            var connectedControllers = GamepadManager.GetConnectedControllers();
-            if (connectedControllers.Length == 0)
-            {
-                MessageBox.Show("No gamepad connected. Please connect a gamepad and try again.", 
-                    "No Gamepad", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            _isListeningForGamepadInput = true;
-            _currentHotkeyBeingSet = hotkey;
-            
-            if (GamepadButtonTextBox != null)
-            {
-                GamepadButtonTextBox.Text = "Listening... Press any gamepad button";
-            }
-            
-            if (set != null)
-            {
-                set.Content = "CANCEL";
-            }
-            
-            GamepadManager.StartListening();
-
-            // Set up timeout timer (10 seconds)
-            _gamepadListeningTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(10)
-            };
-            _gamepadListeningTimer.Tick += (s, args) =>
-            {
-                ResetGamepadListening();
-                MessageBox.Show("Gamepad input timeout. Please try again.", 
-                    "Timeout", MessageBoxButton.OK, MessageBoxImage.Information);
-            };
-            _gamepadListeningTimer.Start();
+            UnifiedInputTextBox.Text = "Listening... Press any key, gamepad, or wheel button";
         }
-        else
+        
+        if (set != null)
         {
-            // Handle steering wheel input with listening mode
-            if (_isListeningForSteeringWheelInput)
-            {
-                // Cancel listening mode
-                ResetSteeringWheelListening();
-                return;
-            }
-
-            // Start listening for steering wheel input
-            var connectedWheels = GamepadManager.GetConnectedSteeringWheels();
-            if (connectedWheels.Length == 0)
-            {
-                MessageBox.Show("No steering wheel connected. Please connect a steering wheel and try again.", 
-                    "No Steering Wheel", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            _isListeningForSteeringWheelInput = true;
-            _currentHotkeyBeingSet = hotkey;
-            
-            if (SteeringWheelButtonTextBox != null)
-            {
-                SteeringWheelButtonTextBox.Text = "Listening... Press any wheel button";
-            }
-            
-            if (set != null)
-            {
-                set.Content = "CANCEL";
-            }
-            
-            GamepadManager.StartListening();
-
-            // Set up timeout timer (10 seconds)
-            _gamepadListeningTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(10)
-            };
-            _gamepadListeningTimer.Tick += (s, args) =>
-            {
-                ResetSteeringWheelListening();
-                MessageBox.Show("Steering wheel input timeout. Please try again.", 
-                    "Timeout", MessageBoxButton.OK, MessageBoxImage.Information);
-            };
-            _gamepadListeningTimer.Start();
+            set.Content = "CANCEL";
         }
+        
+        // Start listening for gamepad and wheel input
+        GamepadManager.StartListening();
+
+        // Set up timeout timer (10 seconds)
+        _inputListeningTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(10)
+        };
+        _inputListeningTimer.Tick += (s, args) =>
+        {
+            ResetInputListening();
+            MessageBox.Show("Input capture timeout. Please try again.", 
+                "Timeout", MessageBoxButton.OK, MessageBoxImage.Information);
+        };
+        _inputListeningTimer.Start();
+
+        // Enable keyboard input capture
+        this.KeyDown += OnKeyboardInputCaptured;
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
@@ -259,107 +180,53 @@ public partial class MainWindow
             return;
         }
 
-        if (hotkey.UseSteeringWheel)
+        // Update the unified input display based on the hotkey type
+        if (UnifiedInputTextBox != null)
         {
-            // Set steering wheel mode
-            if (SteeringWheelInputRadio != null)
+            if (hotkey.UseSteeringWheel)
             {
-                SteeringWheelInputRadio.IsChecked = true;
-            }
-            if (KeyboardInputBorder != null)
-            {
-                KeyboardInputBorder.Visibility = Visibility.Collapsed;
-            }
-            if (GamepadInputBorder != null)
-            {
-                GamepadInputBorder.Visibility = Visibility.Collapsed;
-            }
-            if (SteeringWheelInputBorder != null)
-            {
-                SteeringWheelInputBorder.Visibility = Visibility.Visible;
-            }
-            if (SteeringWheelButtonTextBox != null)
-            {
-                SteeringWheelButtonTextBox.Text = hotkey.GamepadButton == GamepadButton.None 
+                UnifiedInputTextBox.Text = hotkey.GamepadButton == GamepadButton.None 
                     ? "None" 
-                    : hotkey.GamepadButton.ToString();
+                    : $"Wheel: {hotkey.GamepadButton}";
             }
-        }
-        else if (hotkey.UseGamepad)
-        {
-            // Set gamepad mode
-            if (GamepadInputRadio != null)
+            else if (hotkey.UseGamepad)
             {
-                GamepadInputRadio.IsChecked = true;
-            }
-            if (KeyboardInputBorder != null)
-            {
-                KeyboardInputBorder.Visibility = Visibility.Collapsed;
-            }
-            if (GamepadInputBorder != null)
-            {
-                GamepadInputBorder.Visibility = Visibility.Visible;
-            }
-            if (SteeringWheelInputBorder != null)
-            {
-                SteeringWheelInputBorder.Visibility = Visibility.Collapsed;
-            }
-            if (GamepadButtonTextBox != null)
-            {
-                GamepadButtonTextBox.Text = hotkey.GamepadButton == GamepadButton.None 
+                UnifiedInputTextBox.Text = hotkey.GamepadButton == GamepadButton.None 
                     ? "None" 
-                    : hotkey.GamepadButton.ToString();
+                    : $"Gamepad: {hotkey.GamepadButton}";
             }
-        }
-        else
-        {
-            // Set keyboard mode
-            if (KeyboardInputRadio != null)
+            else
             {
-                KeyboardInputRadio.IsChecked = true;
-            }
-            if (KeyboardInputBorder != null)
-            {
-                KeyboardInputBorder.Visibility = Visibility.Visible;
-            }
-            if (GamepadInputBorder != null)
-            {
-                GamepadInputBorder.Visibility = Visibility.Collapsed;
-            }
-            if (SteeringWheelInputBorder != null)
-            {
-                SteeringWheelInputBorder.Visibility = Visibility.Collapsed;
-            }
-            if (HotKeyBox != null)
-            {
-                HotKeyBox.HotKey = hotkey.Hotkey;
+                if (hotkey.Key == Key.None)
+                {
+                    UnifiedInputTextBox.Text = "None";
+                }
+                else
+                {
+                    string modifierText = hotkey.Modifier != ModifierKeys.None ? hotkey.Modifier.ToString() + " + " : "";
+                    UnifiedInputTextBox.Text = $"Keyboard: {modifierText}{hotkey.Key}";
+                }
             }
         }
     }
 
-    private void OnGamepadButtonCaptured(int controllerIndex, GamepadButton button)
+    private void OnAnyInputCaptured(int controllerIndex, GamepadButton button)
     {
-        if ((!_isListeningForGamepadInput && !_isListeningForSteeringWheelInput) || _currentHotkeyBeingSet == null)
+        if (!_isListeningForAnyInput || _currentHotkeyBeingSet == null)
             return;
 
         // Check if this is a wheel button (controllerIndex == -1 indicates wheel)
         bool isWheelButton = controllerIndex == -1;
         
-        // Only handle the appropriate input type
-        if (_isListeningForGamepadInput && isWheelButton)
-            return; // Ignore wheel buttons when listening for gamepad
-        if (_isListeningForSteeringWheelInput && !isWheelButton)
-            return; // Ignore gamepad buttons when listening for wheel
-
         // Run on UI thread
         Dispatcher.Invoke(() =>
         {
             // Stop listening and timer
             GamepadManager.StopListening();
-            _gamepadListeningTimer?.Stop();
-            _gamepadListeningTimer = null;
-            _isListeningForGamepadInput = false;
-            _isListeningForSteeringWheelInput = false;
+            _inputListeningTimer?.Stop();
+            _inputListeningTimer = null;
+            _isListeningForAnyInput = false;
+            this.KeyDown -= OnKeyboardInputCaptured;
 
             // Check if this button is already assigned
             if (HotkeysManager.CheckExists(button))
@@ -379,13 +246,10 @@ public partial class MainWindow
             _currentHotkeyBeingSet.Hotkey = new MahApps.Metro.Controls.HotKey(Key.None);
 
             // Update the UI
-            if (isWheelButton && SteeringWheelButtonTextBox != null)
+            if (UnifiedInputTextBox != null)
             {
-                SteeringWheelButtonTextBox.Text = button.ToString();
-            }
-            else if (!isWheelButton && GamepadButtonTextBox != null)
-            {
-                GamepadButtonTextBox.Text = button.ToString();
+                string prefix = isWheelButton ? "Wheel" : "Gamepad";
+                UnifiedInputTextBox.Text = $"{prefix}: {button}";
             }
 
             // Reset state
@@ -398,129 +262,119 @@ public partial class MainWindow
         });
     }
 
-    private void ResetGamepadListening()
+    private void OnKeyboardInputCaptured(object sender, KeyEventArgs e)
     {
-        _isListeningForGamepadInput = false;
-        GamepadManager.StopListening();
-        
-        // Stop and dispose timer
-        _gamepadListeningTimer?.Stop();
-        _gamepadListeningTimer = null;
-        
-        if (set != null)
-        {
-            set.Content = "SET";
-            set.IsEnabled = true;
-        }
-        
-        if (GamepadButtonTextBox != null && _currentHotkeyBeingSet != null)
-        {
-            GamepadButtonTextBox.Text = _currentHotkeyBeingSet.GamepadButton == GamepadButton.None 
-                ? "None" 
-                : _currentHotkeyBeingSet.GamepadButton.ToString();
-        }
-        
-        _currentHotkeyBeingSet = null;
-    }
+        if (!_isListeningForAnyInput || _currentHotkeyBeingSet == null)
+            return;
 
-    private void ResetSteeringWheelListening()
-    {
-        _isListeningForSteeringWheelInput = false;
+        e.Handled = true;
+
+        var key = e.Key;
+        var modifiers = Keyboard.Modifiers;
+
+        // Ignore modifier keys alone
+        if (key == Key.LeftCtrl || key == Key.RightCtrl ||
+            key == Key.LeftAlt || key == Key.RightAlt ||
+            key == Key.LeftShift || key == Key.RightShift ||
+            key == Key.LWin || key == Key.RWin)
+        {
+            return;
+        }
+
+        // Stop listening and timer
+        _inputListeningTimer?.Stop();
+        _inputListeningTimer = null;
+        _isListeningForAnyInput = false;
+        this.KeyDown -= OnKeyboardInputCaptured;
         GamepadManager.StopListening();
-        
-        // Stop and dispose timer
-        _gamepadListeningTimer?.Stop();
-        _gamepadListeningTimer = null;
-        
+
+        // Check if this hotkey already exists
+        if (HotkeysManager.CheckExists(key, modifiers))
+        {
+            MessageBox.Show("Keyboard hotkey already assigned!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ResetInputListening();
+            return;
+        }
+
+        // Set the hotkey
+        _currentHotkeyBeingSet.UseGamepad = false;
+        _currentHotkeyBeingSet.UseSteeringWheel = false;
+        _currentHotkeyBeingSet.Key = key;
+        _currentHotkeyBeingSet.Modifier = modifiers;
+        _currentHotkeyBeingSet.GamepadButton = GamepadButton.None;
+        _currentHotkeyBeingSet.Hotkey = new MahApps.Metro.Controls.HotKey(key, modifiers);
+
+        // Update the UI
+        if (UnifiedInputTextBox != null)
+        {
+            string modifierText = modifiers != ModifierKeys.None ? modifiers.ToString() + " + " : "";
+            UnifiedInputTextBox.Text = $"Keyboard: {modifierText}{key}";
+        }
+
+        // Reset state
+        _currentHotkeyBeingSet = null;
         if (set != null)
         {
             set.Content = "SET";
             set.IsEnabled = true;
         }
-        
-        if (SteeringWheelButtonTextBox != null && _currentHotkeyBeingSet != null)
-        {
-            SteeringWheelButtonTextBox.Text = _currentHotkeyBeingSet.GamepadButton == GamepadButton.None 
-                ? "None" 
-                : _currentHotkeyBeingSet.GamepadButton.ToString();
-        }
-        
-        _currentHotkeyBeingSet = null;
     }
 
     private void ResetInputListening()
     {
-        if (_isListeningForGamepadInput)
+        _isListeningForAnyInput = false;
+        GamepadManager.StopListening();
+        this.KeyDown -= OnKeyboardInputCaptured;
+        
+        // Stop and dispose timer
+        _inputListeningTimer?.Stop();
+        _inputListeningTimer = null;
+        
+        if (set != null)
         {
-            ResetGamepadListening();
-        }
-        else if (_isListeningForSteeringWheelInput)
-        {
-            ResetSteeringWheelListening();
-        }
-    }
-
-    private void InitializeGamepadButtons()
-    {
-        // Initialize gamepad button display
-        if (GamepadButtonTextBox != null)
-        {
-            GamepadButtonTextBox.Text = "None";
+            set.Content = "SET";
+            set.IsEnabled = true;
         }
         
-        // Initialize steering wheel button display
-        if (SteeringWheelButtonTextBox != null)
+        if (UnifiedInputTextBox != null && _currentHotkeyBeingSet != null)
         {
-            SteeringWheelButtonTextBox.Text = "None";
+            // Restore the original display based on current hotkey
+            if (_currentHotkeyBeingSet.UseSteeringWheel)
+            {
+                UnifiedInputTextBox.Text = _currentHotkeyBeingSet.GamepadButton == GamepadButton.None 
+                    ? "None" 
+                    : $"Wheel: {_currentHotkeyBeingSet.GamepadButton}";
+            }
+            else if (_currentHotkeyBeingSet.UseGamepad)
+            {
+                UnifiedInputTextBox.Text = _currentHotkeyBeingSet.GamepadButton == GamepadButton.None 
+                    ? "None" 
+                    : $"Gamepad: {_currentHotkeyBeingSet.GamepadButton}";
+            }
+            else
+            {
+                if (_currentHotkeyBeingSet.Key == Key.None)
+                {
+                    UnifiedInputTextBox.Text = "None";
+                }
+                else
+                {
+                    string modifierText = _currentHotkeyBeingSet.Modifier != ModifierKeys.None ? _currentHotkeyBeingSet.Modifier.ToString() + " + " : "";
+                    UnifiedInputTextBox.Text = $"Keyboard: {modifierText}{_currentHotkeyBeingSet.Key}";
+                }
+            }
+        }
+        
+        _currentHotkeyBeingSet = null;
+    }
+
+    private void InitializeUnifiedInput()
+    {
+        // Initialize unified input display
+        if (UnifiedInputTextBox != null)
+        {
+            UnifiedInputTextBox.Text = "None";
         }
     }
 
-    private void InputType_Changed(object sender, RoutedEventArgs e)
-    {
-        if (KeyboardInputRadio?.IsChecked == true)
-        {
-            if (KeyboardInputBorder != null)
-            {
-                KeyboardInputBorder.Visibility = Visibility.Visible;
-            }
-            if (GamepadInputBorder != null)
-            {
-                GamepadInputBorder.Visibility = Visibility.Collapsed;
-            }
-            if (SteeringWheelInputBorder != null)
-            {
-                SteeringWheelInputBorder.Visibility = Visibility.Collapsed;
-            }
-        }
-        else if (GamepadInputRadio?.IsChecked == true)
-        {
-            if (KeyboardInputBorder != null)
-            {
-                KeyboardInputBorder.Visibility = Visibility.Collapsed;
-            }
-            if (GamepadInputBorder != null)
-            {
-                GamepadInputBorder.Visibility = Visibility.Visible;
-            }
-            if (SteeringWheelInputBorder != null)
-            {
-                SteeringWheelInputBorder.Visibility = Visibility.Collapsed;
-            }
-        }
-        else if (SteeringWheelInputRadio?.IsChecked == true)
-        {
-            if (KeyboardInputBorder != null)
-            {
-                KeyboardInputBorder.Visibility = Visibility.Collapsed;
-            }
-            if (GamepadInputBorder != null)
-            {
-                GamepadInputBorder.Visibility = Visibility.Collapsed;
-            }
-            if (SteeringWheelInputBorder != null)
-            {
-                SteeringWheelInputBorder.Visibility = Visibility.Visible;
-            }
-        }
-    }
 }

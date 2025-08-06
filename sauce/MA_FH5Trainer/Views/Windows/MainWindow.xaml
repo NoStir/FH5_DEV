@@ -204,95 +204,26 @@
                            Margin="0 4 0 0"
                            Content="Set Cheat Hotkey"/>
 
-                    <!-- Input Type Selection -->
-                    <Grid Margin="0 4 0 0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <RadioButton x:Name="KeyboardInputRadio" 
-                                   Content="Keyboard" 
-                                   IsChecked="True"
-                                   Checked="InputType_Changed"
-                                   Grid.Column="0"
-                                   HorizontalAlignment="Center"/>
-                        <RadioButton x:Name="GamepadInputRadio" 
-                                   Content="Gamepad" 
-                                   Checked="InputType_Changed"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Center"/>
-                        <RadioButton x:Name="SteeringWheelInputRadio" 
-                                   Content="Wheel" 
-                                   Checked="InputType_Changed"
-                                   Grid.Column="2"
-                                   HorizontalAlignment="Center"/>
-                    </Grid>
-
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Keyboard Input -->
-                        <Border x:Name="KeyboardInputBorder"
+                        <!-- Unified Input Display -->
+                        <Border x:Name="UnifiedInputBorder"
                                 CornerRadius="{StaticResource ControlCornerRadius}" 
                                 Padding="2"
                                 Margin="0 4 0 0"
                                 HorizontalAlignment="Stretch"
-                                Background="{Binding Theming.DarkerColour, Mode=OneWay}"
-                                Visibility="Visible">
+                                Background="{Binding Theming.DarkerColour, Mode=OneWay}">
 
-                            <mah:HotKeyBox
-                                x:Name="HotKeyBox"
-                                BorderThickness="0"
-                                mah:TextBoxHelper.Watermark="None"
-                                HorizontalAlignment="Stretch"
-                                HotKey="{Binding ViewModel.SelectedHotkey.Hotkey, Mode=OneWay}"
-                                IsEnabled="{Binding ViewModel.HotkeysEnabled, Mode=OneWay}"
-                                Background="{Binding Theming.DarkerColour, Mode=OneWay}"
-                                mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"/>
-
-                        </Border>
-
-                        <!-- Gamepad Input -->
-                        <Border x:Name="GamepadInputBorder"
-                                CornerRadius="{StaticResource ControlCornerRadius}" 
-                                Padding="2"
-                                Margin="0 4 0 0"
-                                HorizontalAlignment="Stretch"
-                                Background="{Binding Theming.DarkerColour, Mode=OneWay}"
-                                Visibility="Collapsed">
-
-                            <TextBox x:Name="GamepadButtonTextBox"
+                            <TextBox x:Name="UnifiedInputTextBox"
                                     BorderThickness="0"
                                     HorizontalAlignment="Stretch"
                                     IsReadOnly="True"
                                     Text="None"
-                                    mah:TextBoxHelper.Watermark="Press SET to capture gamepad input"
-                                    IsEnabled="{Binding ViewModel.HotkeysEnabled, Mode=OneWay}"
-                                    Background="{Binding Theming.DarkerColour, Mode=OneWay}"
-                                    mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"/>
-
-                        </Border>
-
-                        <!-- Steering Wheel Input -->
-                        <Border x:Name="SteeringWheelInputBorder"
-                                CornerRadius="{StaticResource ControlCornerRadius}" 
-                                Padding="2"
-                                Margin="0 4 0 0"
-                                HorizontalAlignment="Stretch"
-                                Background="{Binding Theming.DarkerColour, Mode=OneWay}"
-                                Visibility="Collapsed">
-
-                            <TextBox x:Name="SteeringWheelButtonTextBox"
-                                    BorderThickness="0"
-                                    HorizontalAlignment="Stretch"
-                                    IsReadOnly="True"
-                                    Text="None"
-                                    mah:TextBoxHelper.Watermark="Press SET to capture steering wheel input"
+                                    mah:TextBoxHelper.Watermark="Press SET to capture any input"
                                     IsEnabled="{Binding ViewModel.HotkeysEnabled, Mode=OneWay}"
                                     Background="{Binding Theming.DarkerColour, Mode=OneWay}"
                                     mah:ControlsHelper.CornerRadius="{StaticResource ControlCornerRadius}"/>
