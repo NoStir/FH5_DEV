@@ -10053,12 +10053,8 @@
       "MahApps.Metro >= 2.4.10",
       "Memory >= 1.0.0",
       "Microsoft.Extensions.Hosting >= 8.0.0",
-<<<<<<< HEAD
-      "Microsoft.NET.ILLink.Tasks >= 8.0.15",
-      "SharpDX.DirectInput >= 4.2.0",
-=======
       "Microsoft.NET.ILLink.Tasks >= 8.0.18",
->>>>>>> 7619942410cf5566348cb95479d4a83a00d6d876
+      "SharpDX.DirectInput >= 4.2.0",
       "SharpDX.XInput >= 4.2.0",
       "System.Management >= 8.0.0"
     ]
@@ -10069,19 +10065,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
-      "projectUniqueName": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\MA_FH5Trainer.csproj",
+      "projectUniqueName": "/home/runner/work/FH5_DEV/FH5_DEV/sauce/MA_FH5Trainer/MA_FH5Trainer.csproj",
       "projectName": "MA_FH5Trainer",
-      "projectPath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\MA_FH5Trainer.csproj",
-      "packagesPath": "C:\\Users\\Falafel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\MA_FH5Trainer\\obj\\",
-=======
-      "projectUniqueName": "/home/runner/work/FH5_DEV/FH5_DEV/Source/MA_FH5Trainer/MA_FH5Trainer.csproj",
-      "projectName": "MA_FH5Trainer",
-      "projectPath": "/home/runner/work/FH5_DEV/FH5_DEV/Source/MA_FH5Trainer/MA_FH5Trainer.csproj",
+      "projectPath": "/home/runner/work/FH5_DEV/FH5_DEV/sauce/MA_FH5Trainer/MA_FH5Trainer.csproj",
       "packagesPath": "/home/runner/.nuget/packages/",
-      "outputPath": "/home/runner/work/FH5_DEV/FH5_DEV/Source/MA_FH5Trainer/obj/",
->>>>>>> 7619942410cf5566348cb95479d4a83a00d6d876
+      "outputPath": "/home/runner/work/FH5_DEV/FH5_DEV/sauce/MA_FH5Trainer/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/runner/.nuget/NuGet/NuGet.Config"
@@ -10096,13 +10084,8 @@
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "projectReferences": {
-<<<<<<< HEAD
-            "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj": {
-              "projectPath": "C:\\Users\\Falafel\\Downloads\\FH5_DEV-main (1)\\FH5_DEV-main\\Source\\Memory\\Memory.csproj",
-=======
-            "/home/runner/work/FH5_DEV/FH5_DEV/Source/Memory/Memory.csproj": {
-              "projectPath": "/home/runner/work/FH5_DEV/FH5_DEV/Source/Memory/Memory.csproj",
->>>>>>> 7619942410cf5566348cb95479d4a83a00d6d876
+            "/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/Memory.csproj": {
+              "projectPath": "/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/Memory.csproj",
               "privateAssets": "none"
             }
           }
@@ -10188,5 +10171,13 @@
         "#import": []
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file /home/runner/work/FH5_DEV/FH5_DEV/sauce/MA_FH5Trainer/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
