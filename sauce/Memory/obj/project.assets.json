@@ -183,13 +183,5 @@
         "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.118/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file /home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }
