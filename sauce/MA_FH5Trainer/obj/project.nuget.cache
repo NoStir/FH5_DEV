@@ -154,12 +154,5 @@
     "/home/runner/.nuget/packages/microsoft.aspnetcore.app.runtime.win-x64/8.0.18/microsoft.aspnetcore.app.runtime.win-x64.8.0.18.nupkg.sha512",
     "/home/runner/.nuget/packages/microsoft.netcore.app.host.win-x64/8.0.18/microsoft.netcore.app.host.win-x64.8.0.18.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file /home/runner/work/FH5_DEV/FH5_DEV/sauce/MA_FH5Trainer/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }

@@ -1,0 +1,13 @@
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/bin/Release/net8.0-windows/Memory.deps.json
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/bin/Release/net8.0-windows/Memory.dll
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/bin/Release/net8.0-windows/Memory.pdb
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/Release/net8.0-windows/Memory.csproj.AssemblyReference.cache
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/Release/net8.0-windows/Memory.GeneratedMSBuildEditorConfig.editorconfig
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/Release/net8.0-windows/Memory.AssemblyInfoInputs.cache
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/Release/net8.0-windows/Memory.AssemblyInfo.cs
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/Release/net8.0-windows/Memory.csproj.CoreCompileInputs.cache
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/Release/net8.0-windows/Memory.sourcelink.json
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/Release/net8.0-windows/Memory.dll
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/Release/net8.0-windows/refint/Memory.dll
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/Release/net8.0-windows/Memory.pdb
+/home/runner/work/FH5_DEV/FH5_DEV/sauce/Memory/obj/Release/net8.0-windows/ref/Memory.dll
