@@ -1,0 +1,43 @@
+# Build Artifacts
+**/bin/
+**/obj/
+**/*.dll
+**/*.pdb
+**/*.exe
+!MA_FH5Trainer.exe
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.docstates
+
+# NuGet
+packages/
+*.nupkg
+**/project.assets.json
+**/project.nuget.cache
+
+# Temporary files
+**/*_wpftmp.csproj
+**/PublishOutputs.*
+
+# Analysis artifacts
+**/Memory.sourcelink.json
+**/*.AssemblyInfo.cs
+**/*.AssemblyInfoInputs.cache
+**/*.GeneratedMSBuildEditorConfig.editorconfig
+**/*.assets.cache
+**/*.csproj.AssemblyReference.cache
+**/*.csproj.CoreCompileInputs.cache
+**/*.csproj.FileListAbsolute.txt
+**/ref/
+**/refint/
+
+# macOS
+.DS_Store
+
+# IDE files
+*.swp
+*.swo
+*~

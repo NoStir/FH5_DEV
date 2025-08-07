@@ -87,14 +87,44 @@ public partial class App
     
     private static void ReportException(Exception exception, string source)
     {
+        // Create a user-friendly error message
+        string userMessage = GetUserFriendlyErrorMessage(exception);
+        
+        // Create technical details for developers
+        string technicalDetails = $"\n\n=== Technical Details ===\n" +
+                                 $"Source: {source}\n" +
+                                 $"Exception: {exception.Message}\n" +
+                                 $"Stack Trace: {exception.StackTrace}\n" +
+                                 $"Tool Version: {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}\n" +
+                                 $"Game: {GameVerPlat.GetInstance().Name}\n" +
+                                 $"Game Version: {GameVerPlat.GetInstance().Update}\n" +
+                                 $"Platform: {GameVerPlat.GetInstance().Platform}";
+
+        string fullMessage = $"{userMessage}\n\n" +
+                           "Please copy this error (Ctrl+C) and report it on GitHub or Discord (discord.gg/rHzev9brJ3)\n" +
+                           $"{technicalDetails}";
+
         MessageBox.Show(
-            $"An unexpected error happened.\nThe application will terminate after you press \"OK\".\n\n\nPlease (Press Ctrl+C) to copy, and make an issue on the github repository or post the copied text in our discord server (discord.gg/rHzev9brJ3)\n\nSource:{source}\nException:{exception.Message}\nException Callstack:{exception.StackTrace}\n\nTool Version: {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}\nGame: {GameVerPlat.GetInstance().Name}\nGame Version: {GameVerPlat.GetInstance().Update}\nPlatform: {GameVerPlat.GetInstance().Platform}",
-            "MA_FH5Trainer - Error",
-            0,
+            fullMessage,
+            "FH5 Trainer - Unexpected Error",
+            MessageBoxButton.OK,
             MessageBoxImage.Error
         );
         
         Environment.Exit(1);
+    }
+
+    private static string GetUserFriendlyErrorMessage(Exception exception)
+    {
+        return exception switch
+        {
+            UnauthorizedAccessException => "The trainer needs administrator privileges to access game memory. Please run as administrator.",
+            System.ComponentModel.Win32Exception win32Ex when win32Ex.NativeErrorCode == 5 => "Access denied. Please run the trainer as administrator.",
+            System.IO.FileNotFoundException => "A required file is missing. Please reinstall the trainer.",
+            OutOfMemoryException => "The system is running low on memory. Please close other applications and try again.",
+            InvalidOperationException => "The trainer encountered an invalid state. This may happen if the game process is not available.",
+            _ => "An unexpected error occurred. The trainer will now close to prevent further issues."
+        };
     }
 
     protected override void OnExit(ExitEventArgs e)

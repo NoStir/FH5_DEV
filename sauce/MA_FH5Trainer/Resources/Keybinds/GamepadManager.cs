@@ -180,19 +180,30 @@ public static class GamepadManager
                     // Check for wheel button press events
                     CheckWheelButtonEvents(wheel);
                 }
-                catch (Exception)
+                catch (SharpDX.SharpDXException)
                 {
-                    // Wheel disconnected or error, remove it
+                    // Wheel disconnected or DirectInput error, remove it
                     s_steeringWheels.Remove(wheel);
                     s_previousWheelStates.Remove(wheel);
                     s_currentWheelStates.Remove(wheel);
                     wheel?.Dispose();
                 }
+                catch (ObjectDisposedException)
+                {
+                    // Wheel was already disposed, remove it from collections
+                    s_steeringWheels.Remove(wheel);
+                    s_previousWheelStates.Remove(wheel);
+                    s_currentWheelStates.Remove(wheel);
+                }
             }
         }
-        catch (Exception)
+        catch (SharpDX.SharpDXException)
         {
-            // Ignore polling errors
+            // XInput device error - ignore and continue
+        }
+        catch (ObjectDisposedException)
+        {
+            // Controllers were disposed - ignore and continue
         }
     }
 

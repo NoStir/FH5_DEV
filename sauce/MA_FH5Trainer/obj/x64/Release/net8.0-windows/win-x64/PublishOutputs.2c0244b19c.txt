@@ -1,2 +1,0 @@
-C:\Users\Falafel\Documents\GitHub\MA_FH5Trainer_Gamepad\MA_FH5Trainer\Source\MA_FH5Trainer\bin\x64\Release\net8.0-windows\publish\win-x64\Memory.pdb
-C:\Users\Falafel\Documents\GitHub\MA_FH5Trainer_Gamepad\MA_FH5Trainer\Source\MA_FH5Trainer\bin\x64\Release\net8.0-windows\publish\win-x64\MA_FH5Trainer.exe
