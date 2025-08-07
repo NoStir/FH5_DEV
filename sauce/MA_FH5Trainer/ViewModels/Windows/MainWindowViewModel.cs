@@ -29,10 +29,11 @@ using Environment = System.Environment;
 
 namespace MA_FH5Trainer.ViewModels.Windows;
 
-public partial class MainWindowViewModel : ObservableObject
+public partial class MainWindowViewModel : ObservableObject, IDisposable
 {
     private bool _isInitialized;
-    Timer m_timer = new Timer();
+    private readonly Timer m_timer = new Timer();
+    private bool _disposed;
 
     [ObservableProperty]
     private GlobalHotkey m_selectedHotkey = new("DUmb", ModifierKeys.None, Key.None, () => {});
@@ -116,12 +117,6 @@ public partial class MainWindowViewModel : ObservableObject
             _isInitialized = true;
             InitializeViewModel();
         }
-    }
-
-    public void Close()
-    {
-        m_timer.Stop();
-        m_timer.Dispose();
     }
 
     private bool m_firstInit = true;
@@ -414,4 +409,24 @@ public partial class MainWindowViewModel : ObservableObject
         };
     }
 
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed && disposing)
+        {
+            m_timer?.Stop();
+            m_timer?.Dispose();
+            _disposed = true;
+        }
+    }
+
+    public void Close()
+    {
+        Dispose();
+    }
 }

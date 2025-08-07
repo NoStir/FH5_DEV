@@ -75,26 +75,28 @@ public static partial class HotkeysManager
                 return false;
             }
                 
-            bool result = false;
-            Task.Delay(500).ContinueWith(_ => 
+            // Use proper async retry pattern with delay
+            _ = Task.Run(async () =>
             {
-                result = AttemptHookSetup();
+                await Task.Delay(500);
+                AttemptHookSetup();
             });
                     
-            return result;
+            return false; // Return false and let the retry succeed asynchronously
 
         }
         catch (Exception ex)
         {
             if (s_hookRetryCount < MAX_HOOK_RETRIES)
             {
-                bool result = false;
-                Task.Delay(500).ContinueWith(_ => 
+                // Use proper async retry pattern with delay
+                _ = Task.Run(async () =>
                 {
-                    result = AttemptHookSetup();
+                    await Task.Delay(500);
+                    AttemptHookSetup();
                 });
                     
-                return result;
+                return false; // Return false and let the retry succeed asynchronously
             }
                 
             MessageBox.Show($"Exception setting up hotkeys: {ex.Message}",

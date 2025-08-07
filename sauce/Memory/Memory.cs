@@ -97,6 +97,9 @@ public partial class Mem
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern IntPtr GetCurrentProcess();
 
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool CloseHandle(IntPtr handle);
+
     public static bool EnableSeDebugPrivilege()
     {
         if (!IsAdministrator())
@@ -109,21 +112,31 @@ public partial class Mem
             return false;
         }
 
-        if (!LookupPrivilegeValue(null, SE_DEBUG_NAME, out LUID luid))
+        try
         {
-            return false;
+            if (!LookupPrivilegeValue(null, SE_DEBUG_NAME, out LUID luid))
+            {
+                return false;
+            }
+
+            TOKEN_PRIVILEGES tp = new TOKEN_PRIVILEGES
+            {
+                PrivilegeCount = 1,
+                Luid = luid,
+                Attributes = SE_PRIVILEGE_ENABLED
+            };
+
+            bool result = AdjustTokenPrivileges(hToken, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
+            return result;
         }
-
-        TOKEN_PRIVILEGES tp = new TOKEN_PRIVILEGES
+        finally
         {
-            PrivilegeCount = 1,
-            Luid = luid,
-            Attributes = SE_PRIVILEGE_ENABLED
-        };
-
-        bool result = AdjustTokenPrivileges(hToken, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
-        Marshal.FreeHGlobal(hToken);
-        return result;
+            // Properly close the token handle instead of using FreeHGlobal
+            if (hToken != IntPtr.Zero)
+            {
+                CloseHandle(hToken);
+            }
+        }
     }
 
     private static bool IsAdministrator()
